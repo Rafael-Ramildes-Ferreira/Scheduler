@@ -14,10 +14,9 @@ OBJ := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC))
 all: $(PROJECT_MAIN)
 
 $(PROJECT_MAIN): $(OBJ)
-	echo $(SRC)
 	$(CXX) -o $@ $^
 
-obj/%.o: $(SRC) $(INC) obj
+obj/%.o: $(SRC_DIR)/%.cpp $(INC) obj
 	$(CXX) -o $@ -c $< $(FLAGS)
 
 obj: 
