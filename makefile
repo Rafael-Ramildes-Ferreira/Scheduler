@@ -1,6 +1,8 @@
 PROJECT_MAIN := Scheduler
 CXX := g++
 
+FLAGS := -I./inc/
+
 SRC_DIR := src
 INC_DIR := inc
 OBJ_DIR := obj
@@ -16,7 +18,7 @@ $(PROJECT_MAIN): $(OBJ)
 	$(CXX) -o $@ $^
 
 obj/%.o: $(SRC) $(INC) obj
-	$(CXX) -o $@ -c $<
+	$(CXX) -o $@ -c $< $(FLAGS)
 
 obj: 
 	mkdir obj
