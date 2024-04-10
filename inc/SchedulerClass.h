@@ -30,6 +30,12 @@ class RMSScheduler {
 		int set_running_process(Process* process);
 		std::vector<ProcessorCore*> get_cpu_core(void);
 		int set_cpu_core(std::vector<ProcessorCore*> core_vec);
+
+	private:
+		int time_quanta;
+		std::vector<Process*> ready_list;
+		Process* running_process;
+		std::vector<ProcessorCore*> cpu_core;
 };
 
 class EDFScheduler {
@@ -43,6 +49,12 @@ class EDFScheduler {
 		int set_running_process(Process* process);
 		std::vector<ProcessorCore*> get_cpu_core(void);
 		int set_cpu_core(std::vector<ProcessorCore*> core_vec);
+
+	private:
+		int time_quanta;
+		std::vector<Process*> ready_list;
+		Process* running_process;
+		std::vector<ProcessorCore*> cpu_core;
 };
 
 #endif
