@@ -45,7 +45,9 @@ std::vector<Process*> RMSScheduler::get_ready_list(){
 }
 
 int RMSScheduler::set_ready_list(std::vector<Process*> process_vec){
-	ready_list = process_vec;
+	for(Process* pP : process_vec){
+		RMSScheduler::add_to_ready(pP);	// Ensures the list is sorted
+	}
 
 	return 0; // No error
 }
@@ -115,7 +117,9 @@ std::vector<Process*> EDFScheduler::get_ready_list(){
 }
 
 int EDFScheduler::set_ready_list(std::vector<Process*> process_vec){
-	ready_list = process_vec;
+	for(Process* pP : process_vec){
+		EDFScheduler::add_to_ready(pP);	// Ensures the list is sorted
+	}
 
 	return 0; // No error
 }
