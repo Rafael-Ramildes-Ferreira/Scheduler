@@ -9,7 +9,7 @@ class AbstractContex{};
 
 class AbstractScheduler {
 	public:
-		virtual int swap_context(void);
+		virtual int swap_context(unsigned int core_number);
 		virtual int add_to_ready(Process* process);
 		virtual unsigned int get_time_quanta(void);
 		virtual int set_time_quanta(int quanta);
@@ -23,7 +23,7 @@ class AbstractScheduler {
 
 class RMSScheduler {
 	public:
-		int swap_context(void);
+		int swap_context(unsigned int core_number);
 		int add_to_ready(Process* process);
 		unsigned int get_time_quanta(void);
 		int set_time_quanta(int quanta);
@@ -43,7 +43,7 @@ class RMSScheduler {
 
 class EDFScheduler {
 	public:
-		int swap_context(void);
+		int swap_context(unsigned int core_number);
 		int add_to_ready(Process* process);
 		unsigned int get_time_quanta(void);
 		int set_time_quanta(int quanta);

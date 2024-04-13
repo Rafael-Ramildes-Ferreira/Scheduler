@@ -2,14 +2,14 @@
 
 
 /* RMS Scheduler methods -----------------------------------------------------*/
-int RMSScheduler::swap_context(void){
+int RMSScheduler::swap_context(unsigned int core_number){
 	if(ready_list.empty()){
 		return -1;	// Error
 	}
 
 	// Save the context object
 	AbstractContex running_contex;
-	std::copy(get_cpu_core()[0]->get_context(),&running_contex);
+	std::copy(get_cpu_core()[core_number]->get_context(),&running_contex);
 
 	// Pop next process from the ready list
 	Process *next_to_run = ready_list.front();
@@ -21,7 +21,7 @@ int RMSScheduler::swap_context(void){
 
 	// Loads the next contex
 	std::copy(running_process->get_contex(),&running_contex);
-	get_cpu_core()[0]->set_context(&running_contex);
+	get_cpu_core()[core_number]->set_context(&running_contex);
 	
 	return 0; // No error
 }
@@ -74,14 +74,14 @@ int RMSScheduler::set_cpu_core(std::vector<ProcessorCore*> core_vec){
 
 
 /* EDF Scheduler methods -----------------------------------------------------*/
-int EDFScheduler::swap_context(){
+int EDFScheduler::swap_context(unsigned int core_number){
 	if(ready_list.empty()){
 		return -1;	// Error
 	}
 
 	// Save the context object
 	AbstractContex running_contex;
-	std::copy(get_cpu_core()[0]->get_context(),&running_contex);
+	std::copy(get_cpu_core()[core_number]->get_context(),&running_contex);
 
 	// Pop next process from the ready list
 	Process *next_to_run = ready_list.front();
@@ -93,7 +93,7 @@ int EDFScheduler::swap_context(){
 
 	// Loads the next contex
 	std::copy(running_process->get_contex(),&running_contex);
-	get_cpu_core()[0]->set_context(&running_contex);
+	get_cpu_core()[core_number]->set_context(&running_contex);
 	
 	return 0; // No error
 }
