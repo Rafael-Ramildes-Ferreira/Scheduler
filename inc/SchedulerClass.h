@@ -7,6 +7,9 @@ class Process{};
 class ProcessorCore{};
 class AbstractContex{};
 
+/**
+ * @brief Defines basic structure for a Scheduler class
+*/
 class AbstractScheduler {
 	public:
 		virtual int swap_context(unsigned int core_number);
@@ -21,6 +24,9 @@ class AbstractScheduler {
 		virtual int set_cpu_core(std::vector<ProcessorCore*> core_vec);
 };
 
+/**
+ * @brief Declares all functions of a class to describe a Rate Monotonic Scheduler
+*/
 class RMSScheduler {
 	public:
 		int swap_context(unsigned int core_number);
@@ -41,6 +47,9 @@ class RMSScheduler {
 		std::vector<ProcessorCore*> cpu_core;
 };
 
+/**
+ * @brief Declares all functions of a class to describe a Earliest Deadline First Scheduler
+*/
 class EDFScheduler {
 	public:
 		int swap_context(unsigned int core_number);
