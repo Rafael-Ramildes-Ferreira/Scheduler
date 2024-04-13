@@ -1,3 +1,6 @@
+#ifndef _CONTEXT_CLASS_HPP
+#define _CONTEXT_CLASS_HPP
+
 class Context {
 	private:
 		int idProcess;
@@ -14,4 +17,5 @@ class Context {
 		int getEnd(void);
 		int getNc(void)
 		int getRunningTime(void)
-}
+};
+#endif
