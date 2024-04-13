@@ -6,7 +6,7 @@
  * @brief Exchange the current running context to the next one, according to the
  * 		Rate Monotonic algorithm
  * @param core_number: number of the core which contex has to be swiched
- * @returns 0: if successfull
+ * @returns id: ID of the running process
  * 			-1: if failed
 */
 int RMSScheduler::swap_context(unsigned int core_number){
@@ -30,7 +30,7 @@ int RMSScheduler::swap_context(unsigned int core_number){
 	std::copy(running_process->get_contex(),&running_contex);
 	get_cpu_core()[core_number]->set_context(&running_contex);
 	
-	return 0; // No error
+	return running_process->get_id(); // No error
 }
 
 /**
