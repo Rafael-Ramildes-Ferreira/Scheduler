@@ -2,7 +2,31 @@
 
 
 /* RMS Scheduler methods -----------------------------------------------------*/
-int RMSScheduler::swap_context(){
+int RMSScheduler::swap_context(void){
+	if(ready_list.empty()){
+		return -1;	// Error
+	}
+
+	// Save the context object
+	AbstractContex running_contex;
+	std::copy(get_cpu_core()[0]->get_context(),&running_contex);
+
+	// Pop next process from the ready list
+	Process *next_to_run = ready_list.front();
+	ready_list.erase(ready_list.begin());
+
+	// Swaps Running process with next process
+	RMSScheduler::add_to_ready(running_process);
+	running_process = next_to_run;
+
+	// Loads the next contex
+	std::copy(running_process->get_contex(),&running_contex);
+	get_cpu_core()[0]->set_context(&running_contex);
+	
+	return 0; // No error
+}
+
+int RMSScheduler::add_to_ready(Process* process){
 	return 0;
 }
 
@@ -49,12 +73,37 @@ int RMSScheduler::set_cpu_core(std::vector<ProcessorCore*> core_vec){
 
 /* EDF Scheduler methods -----------------------------------------------------*/
 int EDFScheduler::swap_context(){
-	return 0;
+	if(ready_list.empty()){
+		return -1;	// Error
+	}
+
+	// Save the context object
+	AbstractContex running_contex;
+	std::copy(get_cpu_core()[0]->get_context(),&running_contex);
+
+	// Pop next process from the ready list
+	Process *next_to_run = ready_list.front();
+	ready_list.erase(ready_list.begin());
+
+	// Swaps Running process with next process
+	EDFScheduler::add_to_ready(running_process);
+	running_process = next_to_run;
+
+	// Loads the next contex
+	std::copy(running_process->get_contex(),&running_contex);
+	get_cpu_core()[0]->set_context(&running_contex);
+	
+	return 0; // No error
+}
+
+int EDFScheduler::add_to_ready(Process* process){
+	return 0; // No error
 }
 
 unsigned int EDFScheduler::get_time_quanta(){
 	return time_quanta;
 }
+
 int EDFScheduler::set_time_quanta(int quanta){
 	time_quanta = quanta;
 
