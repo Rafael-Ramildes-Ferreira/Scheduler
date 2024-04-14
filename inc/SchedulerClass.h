@@ -3,6 +3,10 @@
 
 #include <vector>
 
+class Process{};
+class ProcessorCore{};
+class AbstractContex{};
+
 /**
  * @brief Defines basic structure for a Scheduler class
 */
