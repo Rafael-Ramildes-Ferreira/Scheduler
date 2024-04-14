@@ -12,6 +12,8 @@ class AbstractContex{};
 */
 class AbstractScheduler {
 	public:
+		AbstractScheduler(unsigned int quanta, unsigned int core_n);
+		~AbstractScheduler();
 		virtual int add_to_ready(Process* process);
 		int swap_context(unsigned int core_number);
 		unsigned int get_time_quanta(void);

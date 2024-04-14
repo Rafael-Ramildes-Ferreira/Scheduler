@@ -3,6 +3,28 @@
 
 /* Abstract Scheduler methods ------------------------------------------------*/
 /**
+ * @brief AbstractScheduler constructor
+ * @param quanta: Time quanta to be used
+ * @param core_n: Number os cores in the machine
+ * @returns New object
+*/
+AbstractScheduler::AbstractScheduler(unsigned int quanta, unsigned int core_n){
+		time_quanta = quanta;
+		ready_list = {};
+		running_process = nullptr;
+		cpu_core = {};
+		for(int i = 0;i < core_n;i++)
+			cpu_core.push_back(new ProcessorCore);
+}
+
+/**
+ * @brief AbstractScheduler destructor
+*/
+AbstractScheduler::~AbstractScheduler(){
+	delete running_process;
+}
+
+/**
  * @brief Exchange the current running context to the next one, according to the
  * 		Rate Monotonic algorithm
  * @param core_number: number of the core which contex has to be swiched
@@ -23,7 +45,8 @@ int AbstractScheduler::swap_context(unsigned int core_number){
 	}
 
 	// Pop next process from the ready list
-	Process *next_to_run = ready_list.front();
+	Process *next_to_run;
+	next_to_run = ready_list.front();
 	ready_list.erase(ready_list.begin());
 
 	// Save process that will be put to run
