@@ -4,26 +4,28 @@
 
 using namespace std;
 
-class File
-{
+/* Class declaration ---------------------------------------------------------*/
+class File{
+	public:
+		File();	
+		void read_file();
+		void print_processes_params();
+		~File();
+		vector<Process *> get_processes();
 
-public:
-	File();	
-	void read_file();
-	void print_processes_params();
-	~File();
-	vector<Process *> get_processes();
-
-private:
-	ifstream myfile; 
-	vector<Process *> processes;
+	private:
+		ifstream myfile; 
+		vector<Process *> processes;
 };
 
+/* Program entry point -------------------------------------------------------*/
 int main(int argc, char* argv[]){
 	RMSScheduler scheduler = new RMSScheduler(1,1);
 	return 0;
 }
 
+
+/* File class methods implementation -----------------------------------------*/
 File::File() {
 	myfile.open("entrada.txt");
 	if (!myfile.is_open()) {
