@@ -15,21 +15,21 @@ int AbstractScheduler::swap_context(unsigned int core_number){
 	}
 
 	// Save the context object
-	AbstractContex running_contex;
-	std::copy(get_cpu_core()[core_number]->get_context(),&running_contex);
+	AbstractContex *running_contex;
+	running_contex = get_cpu_core()[core_number]->get_context();
 
 	// Pop next process from the ready list
 	Process *next_to_run = ready_list.front();
 	ready_list.erase(ready_list.begin());
 
 	// Swaps Running process with next process
-	running_process->set_last_context(&running_contex);
+	running_process->set_last_context(running_contex);
 	AbstractScheduler::add_to_ready(running_process);
 	running_process = next_to_run;
 
 	// Loads the next contex
-	std::copy(running_process->get_contex(),&running_contex);
-	AbstractScheduler::get_cpu_core()[core_number]->set_context(&running_contex);
+	running_contex = running_process->get_contex();
+	AbstractScheduler::get_cpu_core()[core_number]->set_context(running_contex);
 	
 	return running_process->get_id(); // No error
 }
