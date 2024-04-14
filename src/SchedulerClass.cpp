@@ -15,21 +15,24 @@ int AbstractScheduler::swap_context(unsigned int core_number){
 	}
 
 	// Save the context object
-	AbstractContex *running_contex;
-	running_contex = get_cpu_core()[core_number]->get_context();
+	if(running_process != nullptr){
+		AbstractContex *running_contex;
+		running_contex = get_cpu_core()[core_number]->get_context();
+		running_process->set_last_context(running_contex);
+		AbstractScheduler::add_to_ready(running_process);
+	}
 
 	// Pop next process from the ready list
 	Process *next_to_run = ready_list.front();
 	ready_list.erase(ready_list.begin());
 
-	// Swaps Running process with next process
-	running_process->set_last_context(running_contex);
-	AbstractScheduler::add_to_ready(running_process);
+	// Save process that will be put to run
 	running_process = next_to_run;
 
 	// Loads the next contex
-	running_contex = running_process->get_contex();
-	AbstractScheduler::get_cpu_core()[core_number]->set_context(running_contex);
+	AbstractContex *process_last_context;
+	process_last_context = running_process->get_last_contex();
+	AbstractScheduler::get_cpu_core()[core_number]->set_context(process_last_context);
 	
 	return running_process->get_id(); // No error
 }
