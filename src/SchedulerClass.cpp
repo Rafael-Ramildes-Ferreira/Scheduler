@@ -38,10 +38,12 @@ int AbstractScheduler::swap_context(unsigned int core_number){
 
 	// Save the context object
 	if(running_process != nullptr){
-		AbstractContex *running_contex;
-		running_contex = get_cpu_core()[core_number]->get_context();
-		running_process->set_last_context(running_contex);
-		AbstractScheduler::add_to_ready(running_process);
+		if(running_process->get_time_run < running_process->get_duration){
+			AbstractContex *running_contex;
+			running_contex = get_cpu_core()[core_number]->get_context();
+			running_process->set_last_context(running_contex);
+			AbstractScheduler::add_to_ready(running_process);
+		}
 	}
 
 	// Pop next process from the ready list
@@ -178,6 +180,13 @@ RMSScheduler::RMSScheduler(){
  * 			-1: if failed
 */
 int RMSScheduler::add_to_ready(Process* process){
+	/**
+	 * @todo ATTENTION: This should be changed to implement the scheduling
+	 * algorithm, keeping the list sorted
+	*/
+	for(Process pP: process)
+		ready_list.push_back(pP);
+
 	return 0; // No error
 }
 
