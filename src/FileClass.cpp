@@ -33,7 +33,7 @@ void File::read_file() {
 	}
 	
 	while (myfile >> a >> b >> c) {
-		Process *p = new Process(a, b, c);
+		Process *p = new Process();//(a, b, c);
 		processes.push_back(p);
 	}
 

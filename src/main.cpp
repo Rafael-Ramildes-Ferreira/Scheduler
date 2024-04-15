@@ -8,10 +8,16 @@ using namespace std;
 int main(int argc, char* argv[]){
 	// Creates objects
 	File file;
-	file.read();
-	Feed rm_feed = new Feed(file.get_praocesses(),RMSCHEDULING);
+	file.read_file();
+	Feed rm_feed = *(new Feed(file.get_processes(),RMSCHEDULING));
 
 	// Prints diagram header
+	cout << "Tempo\t";
+	int i = 0;
+	for(Process* p:rm_feed.get_processes()){
+		cout << " P" << ++i << " ";
+	}
+	cout << endl;
 
 	// Runs
 	while (rm_feed.step_time() == 0);

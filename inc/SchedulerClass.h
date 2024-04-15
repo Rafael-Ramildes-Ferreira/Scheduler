@@ -13,8 +13,9 @@ class AbstractContex{};
 class AbstractScheduler {
 	public:
 		AbstractScheduler(unsigned int quanta, unsigned int core_n);
+		AbstractScheduler();
 		~AbstractScheduler();
-		virtual int add_to_ready(Process* process);
+		virtual int add_to_ready(Process* process) { return 0; };
 		int swap_context(unsigned int core_number);
 		unsigned int get_time_quanta(void);
 		int set_time_quanta(int quanta);
@@ -41,6 +42,12 @@ class RMSScheduler : public AbstractScheduler {
 		RMSScheduler(unsigned int quanta, unsigned int core_n) : AbstractScheduler(quanta,core_n) {};
 		RMSScheduler();
 		int add_to_ready(Process* process) override;
+
+	private:
+		unsigned int time_quanta;
+		std::vector<Process*> ready_list;
+		Process* running_process;
+		std::vector<ProcessorCore*> cpu_core;
 };
 
 /**
@@ -51,6 +58,12 @@ class EDFScheduler : public AbstractScheduler {
 		EDFScheduler(unsigned int quanta, unsigned int core_n) : AbstractScheduler(quanta,core_n) {};
 		EDFScheduler();
 		int add_to_ready(Process* process) override;
+
+	private:
+		unsigned int time_quanta;
+		std::vector<Process*> ready_list;
+		Process* running_process;
+		std::vector<ProcessorCore*> cpu_core;
 };
 
 #endif

@@ -18,6 +18,17 @@ AbstractScheduler::AbstractScheduler(unsigned int quanta, unsigned int core_n){
 }
 
 /**
+ * @brief Constructor with no input, necessary for the feed class, which 
+ * automatically creates schedulers
+*/
+AbstractScheduler::AbstractScheduler(){
+		time_quanta = 0;
+		ready_list = {};
+		running_process = nullptr;
+		cpu_core = {};
+}
+
+/**
  * @brief AbstractScheduler destructor
 */
 AbstractScheduler::~AbstractScheduler(){
@@ -167,10 +178,10 @@ int AbstractScheduler::add_cpu_core(){
  * automatically creates schedulers
 */
 RMSScheduler::RMSScheduler(){
-	time_quanta = 0;
-	ready_list = {};
-	running_process = nullptr;
-	cpu_core = {};
+	RMSScheduler::time_quanta = 0;
+	RMSScheduler::ready_list = {};
+	RMSScheduler::running_process = nullptr;
+	RMSScheduler::cpu_core = {};
 }
 
 /**
@@ -184,7 +195,7 @@ int RMSScheduler::add_to_ready(Process* process){
 	 * @todo ATTENTION: This should be changed to implement the scheduling
 	 * algorithm, keeping the list sorted
 	*/
-	for(Process pP: process)
+	for(Process *pP: ready_list)
 		ready_list.push_back(pP);
 
 	return 0; // No error
@@ -197,10 +208,10 @@ int RMSScheduler::add_to_ready(Process* process){
  * automatically creates schedulers
 */
 EDFScheduler::EDFScheduler(){
-	time_quanta = 0;
-	ready_list = {};
-	running_process = nullptr;
-	cpu_core = {};
+	EDFScheduler::time_quanta = 0;
+	EDFScheduler::ready_list = {};
+	EDFScheduler::running_process = nullptr;
+	EDFScheduler::cpu_core = {};
 }
 
 /**
