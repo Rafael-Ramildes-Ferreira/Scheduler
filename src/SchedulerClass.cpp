@@ -154,6 +154,13 @@ int AbstractScheduler::set_cpu_core(std::vector<ProcessorCore*> core_vec){
 
 
 /* RM Scheduler methods -----------------------------------------------------*/
+RMSScheduler::RMSScheduler(){
+	time_quanta = 0;
+	ready_list = {};
+	running_process = nullptr;
+	cpu_core = {};
+}
+
 /**
  * @brief Adds a Process to the ready list in the appropriated position
  * @param process: The Process descriptor object to be added
@@ -166,6 +173,13 @@ int RMSScheduler::add_to_ready(Process* process){
 
 
 /* EDF Scheduler methods -----------------------------------------------------*/
+EDFScheduler::EDFScheduler(){
+	time_quanta = 0;
+	ready_list = {};
+	running_process = nullptr;
+	cpu_core = {};
+}
+
 /**
  * @brief Adds a Process to the ready list in the appropriated position
  * @param process: The Process descriptor object to be added

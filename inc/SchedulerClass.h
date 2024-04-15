@@ -37,6 +37,8 @@ class AbstractScheduler {
 */
 class RMSScheduler : public AbstractScheduler {
 	public:
+		RMSScheduler(unsigned int quanta, unsigned int core_n) : AbstractScheduler(quanta,core_n) {};
+		RMSScheduler();
 		int add_to_ready(Process* process) override;
 };
 
@@ -45,6 +47,8 @@ class RMSScheduler : public AbstractScheduler {
 */
 class EDFScheduler : public AbstractScheduler {
 	public:
+		EDFScheduler(unsigned int quanta, unsigned int core_n) : AbstractScheduler(quanta,core_n) {};
+		EDFScheduler();
 		int add_to_ready(Process* process) override;
 };
 
