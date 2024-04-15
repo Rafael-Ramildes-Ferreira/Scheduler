@@ -10,28 +10,29 @@
 Feed::Feed(std::vector<Process*> p_vec, int rule){
 	time = 0;
 	processes = p_vec;
-	// scheduler = (rule)?(AbstractScheduler*) new EDFScheduler(1,1):(AbstractScheduler*) new RMSScheduler(1,1);
 	switch(rule){
 		case RMSCHEDULING: scheduler = (AbstractScheduler*) &rm_scheduler; break;
 		case EDFSCHEDULING: scheduler = (AbstractScheduler*) &edf_scheduler; break;
 	}
+	scheduler->add_cpu_core();
+	scheduler->set_time_quanta(1);
 }
 
 int Feed::step_time(){
 	// Feeds newer processes to the scheduler
 	for(Process *p: processes){
 		if(p->get_start_time() == time){
-			scheduler.add_to_ready(p);
+			scheduler->add_to_ready(p);
 		}
 	}
 
 	// Checks the necessity of swaping the context
-	Process *process = scheduler.get_running_process();
+	Process *process = scheduler->get_running_process();
 	if(process == nullptr)
-		if(scheduler.swap_context(0) == -1)
+		if(scheduler->swap_context(0) == -1)
 			return -1;
 	else if(process->get_time_run()==process->get_duration())
-		if(scheduler.swap_context(0) == -1)
+		if(scheduler->swap_context(0) == -1)
 			return -1;
 	
 	// Steps time in the program

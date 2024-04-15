@@ -152,8 +152,18 @@ int AbstractScheduler::set_cpu_core(std::vector<ProcessorCore*> core_vec){
 	return 0; // No error
 }
 
+int AbstractScheduler::add_cpu_core(){
+	cpu_core.push_back(new ProcessorCore);
+
+	return 0; // No error
+}
+
 
 /* RM Scheduler methods -----------------------------------------------------*/
+/**
+ * @brief Constructor with no input, necessary for the feed class, which 
+ * automatically creates schedulers
+*/
 RMSScheduler::RMSScheduler(){
 	time_quanta = 0;
 	ready_list = {};
@@ -173,6 +183,10 @@ int RMSScheduler::add_to_ready(Process* process){
 
 
 /* EDF Scheduler methods -----------------------------------------------------*/
+/**
+ * @brief Constructor with no input, necessary for the feed class, which 
+ * automatically creates schedulers
+*/
 EDFScheduler::EDFScheduler(){
 	time_quanta = 0;
 	ready_list = {};

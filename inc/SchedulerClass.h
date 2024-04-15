@@ -24,6 +24,7 @@ class AbstractScheduler {
 		int set_running_process(Process* process);
 		std::vector<ProcessorCore*> get_cpu_core(void);
 		int set_cpu_core(std::vector<ProcessorCore*> core_vec);
+		int add_cpu_core();
 
 	private:
 		unsigned int time_quanta;
