@@ -3,17 +3,17 @@
 /**
  * @brief Constructor for the Feed class
  * @param p_vec: Process vector
- * @param rule: Desired Scheduler rule
- * 			0: Rate Monotonic
- * 			1: Earliest Deadline First
+ * @param rule: Desired Scheduler rule from Scheduling_rules defgroup
+ * 			RMSCHEDULING: Rate Monotonic
+ * 			EDFSCHEDULING: Earliest Deadline First
 */
 Feed::Feed(std::vector<Process*> p_vec, int rule){
 	time = 0;
 	processes = p_vec;
 	// scheduler = (rule)?(AbstractScheduler*) new EDFScheduler(1,1):(AbstractScheduler*) new RMSScheduler(1,1);
 	switch(rule){
-		case 0: scheduler = (AbstractScheduler*) &rm_scheduler; break;
-		case 1: scheduler = (AbstractScheduler*) &edf_scheduler; break;
+		case RMSCHEDULING: scheduler = (AbstractScheduler*) &rm_scheduler; break;
+		case EDFSCHEDULING: scheduler = (AbstractScheduler*) &edf_scheduler; break;
 	}
 }
 
