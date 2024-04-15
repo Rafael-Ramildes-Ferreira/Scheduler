@@ -7,6 +7,13 @@
 // #include "ProcessClass.h"
 
 /**
+ * @defgroup Scheduling_rules
+*/
+#define RMSCHEDULING	0
+#define EDFSCHEDULING	1
+
+
+/**
  * @brief Class responsable to feed new processes to the Scheduler
 */
 class Feed{
