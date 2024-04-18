@@ -21,7 +21,7 @@ Feed::Feed(std::vector<Process*> p_vec, int rule){
 int Feed::step_time(){
 	// Feeds newer processes to the scheduler
 	for(Process *p: processes){
-		if(p->get_start_time() == time){
+		if(p->get_creation_time() == time){
 			scheduler->add_to_ready(p);
 		}
 	}
