@@ -3,14 +3,19 @@
 
 #include <vector>
 
+class Process{};
+class ProcessorCore{};
+class AbstractContex{};
+
 /**
  * @brief Defines basic structure for a Scheduler class
 */
 class AbstractScheduler {
 	public:
 		AbstractScheduler(unsigned int quanta, unsigned int core_n);
+		AbstractScheduler();
 		~AbstractScheduler();
-		virtual int add_to_ready(Process* process);
+		virtual int add_to_ready(Process* process) { return 0; };
 		int swap_context(unsigned int core_number);
 		unsigned int get_time_quanta(void);
 		int set_time_quanta(int quanta);
@@ -20,6 +25,7 @@ class AbstractScheduler {
 		int set_running_process(Process* process);
 		std::vector<ProcessorCore*> get_cpu_core(void);
 		int set_cpu_core(std::vector<ProcessorCore*> core_vec);
+		int add_cpu_core();
 
 	private:
 		unsigned int time_quanta;
@@ -33,7 +39,15 @@ class AbstractScheduler {
 */
 class RMSScheduler : public AbstractScheduler {
 	public:
+		RMSScheduler(unsigned int quanta, unsigned int core_n) : AbstractScheduler(quanta,core_n) {};
+		RMSScheduler();
 		int add_to_ready(Process* process) override;
+
+	private:
+		unsigned int time_quanta;
+		std::vector<Process*> ready_list;
+		Process* running_process;
+		std::vector<ProcessorCore*> cpu_core;
 };
 
 /**
@@ -41,7 +55,15 @@ class RMSScheduler : public AbstractScheduler {
 */
 class EDFScheduler : public AbstractScheduler {
 	public:
+		EDFScheduler(unsigned int quanta, unsigned int core_n) : AbstractScheduler(quanta,core_n) {};
+		EDFScheduler();
 		int add_to_ready(Process* process) override;
+
+	private:
+		unsigned int time_quanta;
+		std::vector<Process*> ready_list;
+		Process* running_process;
+		std::vector<ProcessorCore*> cpu_core;
 };
 
 #endif

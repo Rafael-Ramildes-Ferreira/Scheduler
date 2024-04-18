@@ -18,6 +18,17 @@ AbstractScheduler::AbstractScheduler(unsigned int quanta, unsigned int core_n){
 }
 
 /**
+ * @brief Constructor with no input, necessary for the feed class, which 
+ * automatically creates schedulers
+*/
+AbstractScheduler::AbstractScheduler(){
+		time_quanta = 0;
+		ready_list = {};
+		running_process = nullptr;
+		cpu_core = {};
+}
+
+/**
  * @brief AbstractScheduler destructor
 */
 AbstractScheduler::~AbstractScheduler(){
@@ -38,10 +49,12 @@ int AbstractScheduler::swap_context(unsigned int core_number){
 
 	// Save the context object
 	if(running_process != nullptr){
-		AbstractContex *running_contex;
-		running_contex = get_cpu_core()[core_number]->get_context();
-		running_process->set_last_context(running_contex);
-		AbstractScheduler::add_to_ready(running_process);
+		if(running_process->get_time_run < running_process->get_duration){
+			AbstractContex *running_contex;
+			running_contex = get_cpu_core()[core_number]->get_context();
+			running_process->set_last_context(running_contex);
+			AbstractScheduler::add_to_ready(running_process);
+		}
 	}
 
 	// Pop next process from the ready list
@@ -152,8 +165,25 @@ int AbstractScheduler::set_cpu_core(std::vector<ProcessorCore*> core_vec){
 	return 0; // No error
 }
 
+int AbstractScheduler::add_cpu_core(){
+	cpu_core.push_back(new ProcessorCore);
+
+	return 0; // No error
+}
+
 
 /* RM Scheduler methods -----------------------------------------------------*/
+/**
+ * @brief Constructor with no input, necessary for the feed class, which 
+ * automatically creates schedulers
+*/
+RMSScheduler::RMSScheduler(){
+	RMSScheduler::time_quanta = 0;
+	RMSScheduler::ready_list = {};
+	RMSScheduler::running_process = nullptr;
+	RMSScheduler::cpu_core = {};
+}
+
 /**
  * @brief Adds a Process to the ready list in the appropriated position
  * @param process: The Process descriptor object to be added
@@ -161,11 +191,29 @@ int AbstractScheduler::set_cpu_core(std::vector<ProcessorCore*> core_vec){
  * 			-1: if failed
 */
 int RMSScheduler::add_to_ready(Process* process){
+	/**
+	 * @todo ATTENTION: This should be changed to implement the scheduling
+	 * algorithm, keeping the list sorted
+	*/
+	for(Process *pP: ready_list)
+		ready_list.push_back(pP);
+
 	return 0; // No error
 }
 
 
 /* EDF Scheduler methods -----------------------------------------------------*/
+/**
+ * @brief Constructor with no input, necessary for the feed class, which 
+ * automatically creates schedulers
+*/
+EDFScheduler::EDFScheduler(){
+	EDFScheduler::time_quanta = 0;
+	EDFScheduler::ready_list = {};
+	EDFScheduler::running_process = nullptr;
+	EDFScheduler::cpu_core = {};
+}
+
 /**
  * @brief Adds a Process to the ready list in the appropriated position
  * @param process: The Process descriptor object to be added
