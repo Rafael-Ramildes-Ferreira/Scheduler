@@ -41,5 +41,5 @@ void File::read_file() {
 }
 
 std::vector<Process*> File::get_processes(){
-	return processes;
+	return this->processes;
 }

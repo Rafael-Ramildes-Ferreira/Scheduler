@@ -9,12 +9,12 @@
  * @returns New object
 */
 AbstractScheduler::AbstractScheduler(unsigned int quanta, unsigned int core_n){
-		time_quanta = quanta;
-		ready_list = {};
-		running_process = nullptr;
-		cpu_core = {};
+		this->time_quanta = quanta;
+		this->ready_list = {};
+		this->running_process = nullptr;
+		this->cpu_core = {};
 		for(int i = 0;i < core_n;i++)
-			cpu_core.push_back(new ProcessorCore);
+			this->cpu_core.push_back(new ProcessorCore);
 }
 
 /**
@@ -22,17 +22,17 @@ AbstractScheduler::AbstractScheduler(unsigned int quanta, unsigned int core_n){
  * automatically creates schedulers
 */
 AbstractScheduler::AbstractScheduler(){
-		time_quanta = 0;
-		ready_list = {};
-		running_process = nullptr;
-		cpu_core = {};
+		this->time_quanta = 0;
+		this->ready_list = {};
+		this->running_process = nullptr;
+		this->cpu_core = {};
 }
 
 /**
  * @brief AbstractScheduler destructor
 */
 AbstractScheduler::~AbstractScheduler(){
-	delete running_process;
+	delete this->running_process;
 }
 
 /**
@@ -43,34 +43,34 @@ AbstractScheduler::~AbstractScheduler(){
  * 			-1: if failed
 */
 int AbstractScheduler::swap_context(unsigned int core_number){
-	if(ready_list.empty()){
+	if(this->ready_list.empty()){
 		return -1;	// Error
 	}
 
 	// Save the context object
-	if(running_process != nullptr){
-		if(running_process->get_time_run < running_process->get_duration){
+	if(this->running_process != nullptr){
+		if(this->running_process->get_time_run() < this->running_process->get_duration()){
 			AbstractContex *running_contex;
-			running_contex = get_cpu_core()[core_number]->get_context();
-			running_process->set_last_context(running_contex);
-			AbstractScheduler::add_to_ready(running_process);
+			running_contex = this->get_cpu_core()[core_number]->get_context();
+			this->running_process->set_last_context(running_contex);
+			this->add_to_ready(this->running_process);
 		}
 	}
 
 	// Pop next process from the ready list
 	Process *next_to_run;
-	next_to_run = ready_list.front();
-	ready_list.erase(ready_list.begin());
+	next_to_run = this->ready_list.front();
+	this->ready_list.erase(this->ready_list.begin());
 
 	// Save process that will be put to run
-	running_process = next_to_run;
+	this->running_process = next_to_run;
 
 	// Loads the next contex
 	AbstractContex *process_last_context;
-	process_last_context = running_process->get_last_contex();
-	AbstractScheduler::get_cpu_core()[core_number]->set_context(process_last_context);
+	process_last_context = this->running_process->get_last_contex();
+	this->get_cpu_core()[core_number]->set_context(process_last_context);
 	
-	return running_process->get_id(); // No error
+	return this->running_process->get_id(); // No error
 }
 
 /**
@@ -78,7 +78,7 @@ int AbstractScheduler::swap_context(unsigned int core_number){
  * @returns time_quanta
 */
 unsigned int AbstractScheduler::get_time_quanta(){
-	return time_quanta;
+	return this->time_quanta;
 }
 
 /**
@@ -88,7 +88,7 @@ unsigned int AbstractScheduler::get_time_quanta(){
  * 			-1: if failed
 */
 int AbstractScheduler::set_time_quanta(int quanta){
-	time_quanta = quanta;
+	this->time_quanta = quanta;
 
 	return 0; // No error
 }
@@ -98,7 +98,7 @@ int AbstractScheduler::set_time_quanta(int quanta){
  * @returns Vector of the Processes in thr ready state
 */
 std::vector<Process*> AbstractScheduler::get_ready_list(){
-	return ready_list;
+	return this->ready_list;
 }
 
 /**
@@ -119,7 +119,7 @@ std::vector<Process*> AbstractScheduler::get_ready_list(){
 int AbstractScheduler::set_ready_list(std::vector<Process*> process_vec){
 	for(Process* pP : process_vec){
 		// Ensures the list is sorted
-		AbstractScheduler::add_to_ready(pP);
+		this->add_to_ready(pP);
 	}
 
 	return 0; // No error
@@ -130,7 +130,7 @@ int AbstractScheduler::set_ready_list(std::vector<Process*> process_vec){
  * @returns Pointer to Process descriptor object of the currently running Process
 */
 Process* AbstractScheduler::get_running_process(){
-	return running_process;
+	return this->running_process;
 }
 
 /**
@@ -140,7 +140,7 @@ Process* AbstractScheduler::get_running_process(){
  * 			-1: if failed
 */
 int AbstractScheduler::set_running_process(Process* process){
-	running_process = process;
+	this->running_process = process;
 
 	return 0; // No error
 }
@@ -150,7 +150,7 @@ int AbstractScheduler::set_running_process(Process* process){
  * @return A vector of the CPU descriptor object
 */
 std::vector<ProcessorCore*> AbstractScheduler::get_cpu_core(){
-	return cpu_core;
+	return this->cpu_core;
 }
 
 /**
@@ -160,13 +160,13 @@ std::vector<ProcessorCore*> AbstractScheduler::get_cpu_core(){
  * 			-1: if failed
 */
 int AbstractScheduler::set_cpu_core(std::vector<ProcessorCore*> core_vec){
-	cpu_core = core_vec;
+	this->cpu_core = core_vec;
 
 	return 0; // No error
 }
 
 int AbstractScheduler::add_cpu_core(){
-	cpu_core.push_back(new ProcessorCore);
+	this->cpu_core.push_back(new ProcessorCore);
 
 	return 0; // No error
 }
@@ -178,10 +178,10 @@ int AbstractScheduler::add_cpu_core(){
  * automatically creates schedulers
 */
 RMSScheduler::RMSScheduler(){
-	RMSScheduler::time_quanta = 0;
-	RMSScheduler::ready_list = {};
-	RMSScheduler::running_process = nullptr;
-	RMSScheduler::cpu_core = {};
+	this->time_quanta = 0;
+	this->ready_list = {};
+	this->running_process = nullptr;
+	this->cpu_core = {};
 }
 
 /**
@@ -195,8 +195,8 @@ int RMSScheduler::add_to_ready(Process* process){
 	 * @todo ATTENTION: This should be changed to implement the scheduling
 	 * algorithm, keeping the list sorted
 	*/
-	for(Process *pP: ready_list)
-		ready_list.push_back(pP);
+	for(Process *pP: this->ready_list)
+		this->ready_list.push_back(pP);
 
 	return 0; // No error
 }
@@ -208,10 +208,10 @@ int RMSScheduler::add_to_ready(Process* process){
  * automatically creates schedulers
 */
 EDFScheduler::EDFScheduler(){
-	EDFScheduler::time_quanta = 0;
-	EDFScheduler::ready_list = {};
-	EDFScheduler::running_process = nullptr;
-	EDFScheduler::cpu_core = {};
+	this->time_quanta = 0;
+	this->ready_list = {};
+	this->running_process = nullptr;
+	this->cpu_core = {};
 }
 
 /**

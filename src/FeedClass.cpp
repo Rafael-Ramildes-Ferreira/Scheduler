@@ -8,26 +8,26 @@
  * 			EDFSCHEDULING: Earliest Deadline First
 */
 Feed::Feed(std::vector<Process*> p_vec, int rule){
-	time = 0;
-	processes = p_vec;
+	this->time = 0;
+	this->processes = p_vec;
 	switch(rule){
-		case RMSCHEDULING: scheduler = (AbstractScheduler*) &rm_scheduler; break;
-		case EDFSCHEDULING: scheduler = (AbstractScheduler*) &edf_scheduler; break;
+		case RMSCHEDULING: this->scheduler = (AbstractScheduler*) &rm_scheduler; break;
+		case EDFSCHEDULING:this->scheduler = (AbstractScheduler*) &edf_scheduler; break;
 	}
-	scheduler->add_cpu_core();
-	scheduler->set_time_quanta(1);
+	this->scheduler->add_cpu_core();
+	this->scheduler->set_time_quanta(1);
 }
 
 int Feed::step_time(){
 	// Feeds newer processes to the scheduler
-	for(Process *p: processes){
-		if(p->get_creation_time() == time){
+	for(Process *p: this->processes){
+		if(p->get_creation_time() == this->time){
 			scheduler->add_to_ready(p);
 		}
 	}
 
 	// Checks the necessity of swaping the context
-	Process *process = scheduler->get_running_process();
+	Process *process = this->scheduler->get_running_process();
 	if(process == nullptr)
 		if(scheduler->swap_context(0) == -1)
 			return -1;
@@ -44,31 +44,31 @@ int Feed::step_time(){
 }
 
 unsigned int Feed::get_time(){
-	return time;
+	return this->time;
 }
 
 int Feed::set_time(int t){
-	time = t;
+	this->time = t;
 
 	return 0;	// No error
 }
 
 std::vector<Process*> Feed::get_processes(){
-	return processes;
+	return this->processes;
 }
 
 int Feed::set_processes(std::vector<Process*> p_vec){
-	processes = p_vec;
+	this->processes = p_vec;
 
 	return 0;	// No error
 }
 
 AbstractScheduler* Feed::get_scheduler(){
-	return (AbstractScheduler*) scheduler;
+	return (AbstractScheduler*) this->scheduler;
 }
 
 int Feed::set_scheduler(AbstractScheduler *s){
-	scheduler = (AbstractScheduler*) s;
+	this->scheduler = (AbstractScheduler*) s;
 
 	return 0;	//No error
 }
