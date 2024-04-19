@@ -191,6 +191,13 @@ RMSScheduler::RMSScheduler(){
  * 			-1: if failed
 */
 int RMSScheduler::add_to_ready(Process* process){
+	// If this process is already on the registered, it's deadline is probably violated
+	// Remove it to re-add in the right place
+	this->ready_list.remove(process);
+	if(this->running_process == process){
+		this->set_running_process(nullptr);
+	}
+	
 	// Process priority from entrada.txt lines with RM priority
 	// Preemptive case
 	if(process->get_priority() > this->running_process->get_priority()){
@@ -230,6 +237,18 @@ EDFScheduler::EDFScheduler(){
  * 			-1: if failed
 */
 int EDFScheduler::add_to_ready(Process* process){
+	// Check if the process is already registered (this may mean its deadline has passed)
+	// auto it = std::find(this->ready_list.begin(),this->ready_list.end(),process);
+	// if(it != this->ready_list.end()){
+
+	// }
+	// If this process is already on the registered, it's deadline is probably violated
+	// Remove it to re-add in the right place
+	this->ready_list.remove(process);
+	if(this->running_process == process){
+		this->set_running_process(nullptr);
+	}
+
 	int newbie_deadline = process->get_creation_time() + process->get_period();
 	int deadline = this->running_process->get_creation_time() \
 					+ this->running_process->get_period();
