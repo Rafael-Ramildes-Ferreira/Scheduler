@@ -2,12 +2,12 @@
 
 /**
  * @brief Constructor for the Feed class
- * @param p_vec: Process vector
+ * @param p_vec: Process list
  * @param rule: Desired Scheduler rule from Scheduling_rules defgroup
  * 			RMSCHEDULING: Rate Monotonic
  * 			EDFSCHEDULING: Earliest Deadline First
 */
-Feed::Feed(std::vector<Process*> p_vec, int rule){
+Feed::Feed(std::list<Process*> p_vec, int rule){
 	this->time = 0;
 	this->processes = p_vec;
 	switch(rule){
@@ -21,7 +21,10 @@ Feed::Feed(std::vector<Process*> p_vec, int rule){
 int Feed::step_time(){
 	// Feeds newer processes to the scheduler
 	for(Process *p: this->processes){
-		if(p->get_creation_time() == this->time){
+		if(p->get_creation_time() == this->time ||
+			p->get_creation_time()+p->get_period_time() == this->time)
+		{
+			p->set_creation_time(this->time); // Creates the periodicity
 			scheduler->add_to_ready(p);
 		}
 	}
@@ -34,6 +37,11 @@ int Feed::step_time(){
 	else if(process->get_time_run()==process->get_duration())
 		if(scheduler->swap_context(0) == -1)
 			return -1;
+	else if (this->scheduler->check_first_in_ready())
+		if(scheduler->swap_context(0) == -1)
+			return -1;
+	
+			
 	
 	// Steps time in the program
 	process->run();
@@ -53,11 +61,11 @@ int Feed::set_time(int t){
 	return 0;	// No error
 }
 
-std::vector<Process*> Feed::get_processes(){
+std::list<Process*> Feed::get_processes(){
 	return this->processes;
 }
 
-int Feed::set_processes(std::vector<Process*> p_vec){
+int Feed::set_processes(std::list<Process*> p_vec){
 	this->processes = p_vec;
 
 	return 0;	// No error

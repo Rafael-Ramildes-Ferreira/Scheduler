@@ -2,7 +2,7 @@
 #define _FEEDCLASS_H
 
 
-#include <vector>
+#include <list>
 #include "SchedulerClass.h"
 // #include "ProcessClass.h"
 
@@ -18,20 +18,20 @@
 */
 class Feed{
 	public:
-		Feed(std::vector<Process*> p_vec, int rule);
+		Feed(std::list<Process*> p_vec, int rule);
 		int step_time();
 		unsigned int get_time();
 		int set_time(int t);
-		std::vector<Process*> get_processes();
-		int set_processes(std::vector<Process*> p_vec);
+		std::list<Process*> get_processes();
+		int set_processes(std::list<Process*> p_vec);
 		AbstractScheduler* get_scheduler();
 		int set_scheduler(AbstractScheduler *s);
 
 	private:
 		unsigned int time;
-		std::vector<Process*> processes;
+		std::list<Process*> processes;
 		AbstractScheduler *scheduler;
-		RMSScheduler rm_scheduler;
+		RMScheduler rm_scheduler;
 		EDFScheduler edf_scheduler;
 };
 
