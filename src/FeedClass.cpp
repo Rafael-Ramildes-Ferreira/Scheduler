@@ -37,6 +37,11 @@ int Feed::step_time(){
 	else if(process->get_time_run()==process->get_duration())
 		if(scheduler->swap_context(0) == -1)
 			return -1;
+	else if (this->scheduler->check_first_in_ready())
+		if(scheduler->swap_context(0) == -1)
+			return -1;
+	
+			
 	
 	// Steps time in the program
 	process->run();

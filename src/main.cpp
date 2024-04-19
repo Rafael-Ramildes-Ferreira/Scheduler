@@ -20,7 +20,8 @@ int main(int argc, char* argv[]){
 	cout << endl;
 
 	// Runs
-	while (rm_feed.step_time() == 0){
+	for(int i = 0;i <= 30;i++){
+		rm_feed.step_time()
 		cout << rm_feed.get_time()-1 << rm_feed.get_time();
 		cout << "\t";
 		for(Process *p:rm_feed.get_processes()){

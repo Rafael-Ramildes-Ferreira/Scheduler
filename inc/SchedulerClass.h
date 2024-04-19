@@ -17,6 +17,7 @@ class AbstractScheduler {
 		~AbstractScheduler();
 		virtual int add_to_ready(Process* process) { return 0; };
 		int swap_context(unsigned int core_number);
+		virtual bool check_first_in_ready() { return false;};
 		unsigned int get_time_quanta(void);
 		int set_time_quanta(int quanta);
 		std::list<Process*> get_ready_list(void);
@@ -42,6 +43,7 @@ class RMSScheduler : public AbstractScheduler {
 		RMSScheduler(unsigned int quanta, unsigned int core_n) : AbstractScheduler(quanta,core_n) {};
 		RMSScheduler();
 		int add_to_ready(Process* process) override;
+		bool check_first_in_ready() override;
 
 	private:
 		unsigned int time_quanta;
@@ -58,6 +60,7 @@ class EDFScheduler : public AbstractScheduler {
 		EDFScheduler(unsigned int quanta, unsigned int core_n) : AbstractScheduler(quanta,core_n) {};
 		EDFScheduler();
 		int add_to_ready(Process* process) override;
+		bool check_first_in_ready() override;
 
 	private:
 		unsigned int time_quanta;

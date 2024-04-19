@@ -197,14 +197,14 @@ int RMSScheduler::add_to_ready(Process* process){
 	if(this->running_process == process){
 		this->set_running_process(nullptr);
 	}
-	
+
 	// Process priority from entrada.txt lines with RM priority
-	// Preemptive case
-	if(process->get_priority() > this->running_process->get_priority()){
-		this->ready_list.push_front(process);
-		this->swap_context();
-		return 0;
-	}
+	// // Preemptive case
+	// if(process->get_priority() > this->running_process->get_priority()){
+	// 	this->ready_list.push_front(process);
+	// 	this->swap_context();
+	// 	return 0;
+	// }
 
 	// Non-preemptive case
 	int index = 0;
@@ -215,6 +215,18 @@ int RMSScheduler::add_to_ready(Process* process){
 	}
 
 	return 0; // No error
+}
+
+/**
+ * @brief Tests if the first process has higher priority as the running process
+ * @returns false: if it has not higher priority
+ * 			true: if it has
+*/
+bool RMSScheduler::check_first_in_ready(){
+	if(this->ready_list[0]->get_priority() > this->running_process->get_priority()){
+		return true;
+	}
+	return false;
 }
 
 
@@ -233,8 +245,8 @@ EDFScheduler::EDFScheduler(){
 /**
  * @brief Adds a Process to the ready list in the appropriated position
  * @param process: The Process descriptor object to be added
- * @returns 0: if successfull
- * 			-1: if failed
+ * @returns 0: has not swaped the context
+ * 			1: has swaped the context
 */
 int EDFScheduler::add_to_ready(Process* process){
 	// Check if the process is already registered (this may mean its deadline has passed)
@@ -253,12 +265,12 @@ int EDFScheduler::add_to_ready(Process* process){
 	int deadline = this->running_process->get_creation_time() \
 					+ this->running_process->get_period();
 
-	// Preemptive case
-	if(newbie_deadline < deadline){
-		this->ready_list.push_front(process);
-		this->swap_context();
-		return 0;
-	}
+	// // Preemptive case
+	// if(newbie_deadline < deadline){
+	// 	this->ready_list.push_front(process);
+	// 	this->swap_context();
+	// 	return 1;
+	// }
 
 	// Non-preemptive case
 	int index = 0;
@@ -269,4 +281,18 @@ int EDFScheduler::add_to_ready(Process* process){
 		else index++;
 	}
 	return 0; // No error
+}
+
+/**
+ * @brief Tests if the first process has higher priority as the running process
+ * @returns false: if it has not higher priority
+ * 			true: if it has
+*/
+bool RMSScheduler::check_first_in_ready(){
+	int ready_deadline = this->ready_list[0]->get_creation_time() + this->ready_list[0]->get_period();
+	int running_deadline = this->running_process->get_creation_time() + this->running_process->get_period();
+	if(ready_deadline < running_deadline){
+		return true;
+	}
+	return false;
 }
