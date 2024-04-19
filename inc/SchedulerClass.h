@@ -38,10 +38,10 @@ class AbstractScheduler {
 /**
  * @brief Declares all functions of a class to describe a Rate Monotonic Scheduler
 */
-class RMSScheduler : public AbstractScheduler {
+class RMScheduler : public AbstractScheduler {
 	public:
-		RMSScheduler(unsigned int quanta, unsigned int core_n) : AbstractScheduler(quanta,core_n) {};
-		RMSScheduler();
+		RMScheduler(unsigned int quanta, unsigned int core_n) : AbstractScheduler(quanta,core_n) {};
+		RMScheduler();
 		int add_to_ready(Process* process) override;
 		bool check_first_in_ready() override;
 

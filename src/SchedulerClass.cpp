@@ -177,7 +177,7 @@ int AbstractScheduler::add_cpu_core(){
  * @brief Constructor with no input, necessary for the feed class, which 
  * automatically creates schedulers
 */
-RMSScheduler::RMSScheduler(){
+RMScheduler::RMScheduler(){
 	this->time_quanta = 0;
 	this->ready_list = {};
 	this->running_process = nullptr;
@@ -190,7 +190,7 @@ RMSScheduler::RMSScheduler(){
  * @returns 0: if successfull
  * 			-1: if failed
 */
-int RMSScheduler::add_to_ready(Process* process){
+int RMScheduler::add_to_ready(Process* process){
 	// If this process is already on the registered, it's deadline is probably violated
 	// Remove it to re-add in the right place
 	this->ready_list.remove(process);
@@ -222,7 +222,7 @@ int RMSScheduler::add_to_ready(Process* process){
  * @returns false: if it has not higher priority
  * 			true: if it has
 */
-bool RMSScheduler::check_first_in_ready(){
+bool RMScheduler::check_first_in_ready(){
 	if(this->ready_list[0]->get_priority() > this->running_process->get_priority()){
 		return true;
 	}
@@ -288,7 +288,7 @@ int EDFScheduler::add_to_ready(Process* process){
  * @returns false: if it has not higher priority
  * 			true: if it has
 */
-bool RMSScheduler::check_first_in_ready(){
+bool RMScheduler::check_first_in_ready(){
 	int ready_deadline = this->ready_list[0]->get_creation_time() + this->ready_list[0]->get_period();
 	int running_deadline = this->running_process->get_creation_time() + this->running_process->get_period();
 	if(ready_deadline < running_deadline){

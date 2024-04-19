@@ -31,7 +31,7 @@ class Feed{
 		unsigned int time;
 		std::list<Process*> processes;
 		AbstractScheduler *scheduler;
-		RMSScheduler rm_scheduler;
+		RMScheduler rm_scheduler;
 		EDFScheduler edf_scheduler;
 };
 
