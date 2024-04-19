@@ -192,12 +192,14 @@ RMSScheduler::RMSScheduler(){
 */
 int RMSScheduler::add_to_ready(Process* process){
 	// Process priority from entrada.txt lines with RM priority
+	// Preemptive case
 	if(process->get_priority() > this->running_process->get_priority()){
 		this->ready_list.push_front(process);
 		this->swap_context();
 		return 0;
 	}
 
+	// Non-preemptive case
 	int index = 0;
 	for(Process *pP: this->ready_list){
 		if(process->get_priority() > pP->get_priority())
@@ -228,5 +230,24 @@ EDFScheduler::EDFScheduler(){
  * 			-1: if failed
 */
 int EDFScheduler::add_to_ready(Process* process){
+	int newbie_deadline = process->get_creation_time() + process->get_period();
+	int deadline = this->running_process->get_creation_time() \
+					+ this->running_process->get_period();
+
+	// Preemptive case
+	if(newbie_deadline < deadline){
+		this->ready_list.push_front(process);
+		this->swap_context();
+		return 0;
+	}
+
+	// Non-preemptive case
+	int index = 0;
+	for(Process *pP: this->get_ready_list()){
+		deadline = pP->get_creation_time() + pP->get_period();
+		if(newbie_deadline < deadline)
+			this->ready_list().insert(index,Process);
+		else index++;
+	}
 	return 0; // No error
 }
