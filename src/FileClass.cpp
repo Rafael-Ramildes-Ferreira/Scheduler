@@ -17,7 +17,7 @@ File::~File() {
 }
 
 void File::print_processes_params() {
-	std::vector<Process *>::iterator iter = processes.begin();
+	std::list<Process *>::iterator iter = processes.begin();
 
 	// for(iter; iter < processes.end(); iter++) {
 	// 	Process *p = *iter;
@@ -40,6 +40,6 @@ void File::read_file() {
 	std::cout << "Quantidade de processos lidos do arquivo: " << processes.size() << std::endl;
 }
 
-std::vector<Process*> File::get_processes(){
+std::list<Process*> File::get_processes(){
 	return this->processes;
 }

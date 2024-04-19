@@ -1,7 +1,7 @@
 #ifndef _SCHEDULER_CLASS_H
 #define _SCHEDULER_CLASS_H
 
-#include <vector>
+#include <list>
 
 class Process{};
 class ProcessorCore{};
@@ -19,19 +19,19 @@ class AbstractScheduler {
 		int swap_context(unsigned int core_number);
 		unsigned int get_time_quanta(void);
 		int set_time_quanta(int quanta);
-		std::vector<Process*> get_ready_list(void);
-		int set_ready_list(std::vector<Process*> process_vec);
+		std::list<Process*> get_ready_list(void);
+		int set_ready_list(std::list<Process*> process_vec);
 		Process* get_running_process(void);
 		int set_running_process(Process* process);
-		std::vector<ProcessorCore*> get_cpu_core(void);
-		int set_cpu_core(std::vector<ProcessorCore*> core_vec);
+		std::list<ProcessorCore*> get_cpu_core(void);
+		int set_cpu_core(std::list<ProcessorCore*> core_vec);
 		int add_cpu_core();
 
 	private:
 		unsigned int time_quanta;
-		std::vector<Process*> ready_list;
+		std::list<Process*> ready_list;
 		Process* running_process;
-		std::vector<ProcessorCore*> cpu_core;
+		std::list<ProcessorCore*> cpu_core;
 };
 
 /**
@@ -45,9 +45,9 @@ class RMSScheduler : public AbstractScheduler {
 
 	private:
 		unsigned int time_quanta;
-		std::vector<Process*> ready_list;
+		std::list<Process*> ready_list;
 		Process* running_process;
-		std::vector<ProcessorCore*> cpu_core;
+		std::list<ProcessorCore*> cpu_core;
 };
 
 /**
@@ -61,9 +61,9 @@ class EDFScheduler : public AbstractScheduler {
 
 	private:
 		unsigned int time_quanta;
-		std::vector<Process*> ready_list;
+		std::list<Process*> ready_list;
 		Process* running_process;
-		std::vector<ProcessorCore*> cpu_core;
+		std::list<ProcessorCore*> cpu_core;
 };
 
 #endif

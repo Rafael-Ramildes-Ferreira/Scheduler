@@ -94,16 +94,16 @@ int AbstractScheduler::set_time_quanta(int quanta){
 }
 
 /**
- * @brief Gets list of ready Process descriptor object has a vector
- * @returns Vector of the Processes in thr ready state
+ * @brief Gets list of ready Process descriptor object has a list
+ * @returns list of the Processes in thr ready state
 */
-std::vector<Process*> AbstractScheduler::get_ready_list(){
+std::list<Process*> AbstractScheduler::get_ready_list(){
 	return this->ready_list;
 }
 
 /**
  *  @todo Add the option of adding many processes to the ready list at once
- * as a vector or as a list, or array. Add this options to set_ready list to
+ * as a list or as a list, or array. Add this options to set_ready list to
 */
 /**
  * @todo Clean redy list before saving new Processes in it when set_ready_list is used
@@ -112,11 +112,11 @@ std::vector<Process*> AbstractScheduler::get_ready_list(){
 /**
  * @brief Sets a new list of ready Processes
  * 		ATENTION: This will erase the previos list!!
- * @param process_vec: Process descriptor object to be added as a vector
+ * @param process_vec: Process descriptor object to be added as a list
  * @returns 0: if successfull
  * 			-1: if failed
 */
-int AbstractScheduler::set_ready_list(std::vector<Process*> process_vec){
+int AbstractScheduler::set_ready_list(std::list<Process*> process_vec){
 	for(Process* pP : process_vec){
 		// Ensures the list is sorted
 		this->add_to_ready(pP);
@@ -147,19 +147,19 @@ int AbstractScheduler::set_running_process(Process* process){
 
 /**
  * @brief Gets all CPU registered
- * @return A vector of the CPU descriptor object
+ * @return A list of the CPU descriptor object
 */
-std::vector<ProcessorCore*> AbstractScheduler::get_cpu_core(){
+std::list<ProcessorCore*> AbstractScheduler::get_cpu_core(){
 	return this->cpu_core;
 }
 
 /**
- * @brief Sets a new vector of CPUs
- * @param core_vec: CPUs descriptor object as a vector
+ * @brief Sets a new list of CPUs
+ * @param core_vec: CPUs descriptor object as a list
  * @returns 0: if successfull
  * 			-1: if failed
 */
-int AbstractScheduler::set_cpu_core(std::vector<ProcessorCore*> core_vec){
+int AbstractScheduler::set_cpu_core(std::list<ProcessorCore*> core_vec){
 	this->cpu_core = core_vec;
 
 	return 0; // No error
@@ -191,12 +191,19 @@ RMSScheduler::RMSScheduler(){
  * 			-1: if failed
 */
 int RMSScheduler::add_to_ready(Process* process){
-	/**
-	 * @todo ATTENTION: This should be changed to implement the scheduling
-	 * algorithm, keeping the list sorted
-	*/
-	for(Process *pP: this->ready_list)
-		this->ready_list.push_back(pP);
+	// Process priority from entrada.txt lines with RM priority
+	if(process->get_priority() > this->running_process->get_priority()){
+		this->ready_list.push_front(process);
+		this->swap_context();
+		return 0;
+	}
+
+	int index = 0;
+	for(Process *pP: this->ready_list){
+		if(process->get_priority() > pP->get_priority())
+			this->ready_list.insert(index, process);
+		else index++;
+	}
 
 	return 0; // No error
 }

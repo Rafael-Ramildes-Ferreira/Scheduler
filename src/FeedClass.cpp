@@ -2,12 +2,12 @@
 
 /**
  * @brief Constructor for the Feed class
- * @param p_vec: Process vector
+ * @param p_vec: Process list
  * @param rule: Desired Scheduler rule from Scheduling_rules defgroup
  * 			RMSCHEDULING: Rate Monotonic
  * 			EDFSCHEDULING: Earliest Deadline First
 */
-Feed::Feed(std::vector<Process*> p_vec, int rule){
+Feed::Feed(std::list<Process*> p_vec, int rule){
 	this->time = 0;
 	this->processes = p_vec;
 	switch(rule){
@@ -53,11 +53,11 @@ int Feed::set_time(int t){
 	return 0;	// No error
 }
 
-std::vector<Process*> Feed::get_processes(){
+std::list<Process*> Feed::get_processes(){
 	return this->processes;
 }
 
-int Feed::set_processes(std::vector<Process*> p_vec){
+int Feed::set_processes(std::list<Process*> p_vec){
 	this->processes = p_vec;
 
 	return 0;	// No error

@@ -1,7 +1,7 @@
 #ifndef _FILECLASS_H
 #define _FILECLASS_H
 
-#include <vector>
+#include <list>
 #include <fstream>
 #include "SchedulerClass.h" // Temporary
 
@@ -15,11 +15,11 @@ class File{
 		void read_file();
 		void print_processes_params();
 		~File();
-		std::vector<Process*> get_processes();
+		std::list<Process*> get_processes();
 
 	private:
 		std::ifstream myfile; 
-		std::vector<Process*> processes;
+		std::list<Process*> processes;
 };
 
 #endif
