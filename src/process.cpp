@@ -68,6 +68,6 @@ void Process::increment_executed_time(){
     if (this->executed_time == 1) {
         this->state = EXECUTING;
     } else if (this->executed_time == duration) {
-        this->executed_time = FINISHED;
+        this->state = FINISHED;
     }
 };
