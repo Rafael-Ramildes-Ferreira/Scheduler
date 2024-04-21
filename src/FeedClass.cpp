@@ -34,10 +34,7 @@ int Feed::step_time(){
 	if(process == nullptr)
 		if(scheduler->swap_context() == -1)
 			return -1;
-	else if(process->get_executed_time()==process->get_duration())
-		if(scheduler->swap_context() == -1)
-			return -1;
-	else if (this->scheduler->check_first_in_ready())
+	else if(process->get_state() == FINISHED || this->scheduler->check_first_in_ready())
 		if(scheduler->swap_context() == -1)
 			return -1;
 	

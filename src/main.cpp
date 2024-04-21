@@ -26,13 +26,14 @@ int main(int argc, char* argv[]){
 		cout << "\t";
 		for(Process *p:rm_feed.get_processes()){
 			switch(p->get_current_state()){
-				case PRONTO:
+				case READY:
 					cout << " -- ";
 					break;
-				case EXECUTANDO:
+				case EXECUTING:
 					cout << " ## ";
 					break;
-				case TERMINADO:
+				case CREATED:
+				case FINISHED:
 					cout << "    ";
 					break;
 			}

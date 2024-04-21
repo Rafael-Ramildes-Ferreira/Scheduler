@@ -180,6 +180,9 @@ RMScheduler::RMScheduler(){
  * 			-1: if failed
 */
 int RMScheduler::add_to_ready(Process* process){
+	// Set ProcessState
+	Process->set_state(READY);
+	
 	// If this process is already on the registered, it's deadline is probably violated
 	// Remove it to re-add in the right place
 	this->ready_list.remove(process);
@@ -228,11 +231,9 @@ EDFScheduler::EDFScheduler(){
  * 			1: has swaped the context
 */
 int EDFScheduler::add_to_ready(Process* process){
-	// Check if the process is already registered (this may mean its deadline has passed)
-	// auto it = std::find(this->ready_list.begin(),this->ready_list.end(),process);
-	// if(it != this->ready_list.end()){
-
-	// }
+	// Set ProcessState
+	Process->set_state(READY);
+	
 	// If this process is already on the registered, it's deadline is probably violated
 	// Remove it to re-add in the right place
 	this->ready_list.remove(process);
