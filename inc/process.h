@@ -1,4 +1,12 @@
+#ifndef _PROCESS_H
+#define _PROCESS_H
+
+#include "SchedulerClass.h" // Temporary
+// #include "AbstractContext.h"
+
 enum ProcessState {CREATED, READY, EXECUTING, FINISHED};
+
+class AbstractContext{};
 
 class Process
 {
@@ -6,10 +14,10 @@ class Process
 private:
     int creation_time, duration, priority, executed_time = 0;
     ProcessState state = CREATED;
-    Context *context;
+    AbstractContext *context;
 
 public:
-    Process(int creation_time, int duration, int priority, Context *context);
+    Process(int creation_time, int duration, int priority, AbstractContext *context);
 
     ~Process();
 
@@ -23,7 +31,7 @@ public:
 
     ProcessState get_state();
 
-    Context *get_context();
+    AbstractContext *get_context();
 
     void set_creation_time(int creation_time);
 
@@ -31,10 +39,12 @@ public:
 
     void set_priority(int priority);
 
-    void set_context(Context *context);
+    void set_context(AbstractContext *context);
 
     void set_state(ProcessState state);
 
     void increment_executed_time();
 
 };
+
+#endif

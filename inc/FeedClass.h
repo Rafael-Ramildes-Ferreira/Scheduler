@@ -4,7 +4,7 @@
 
 #include <list>
 #include "SchedulerClass.h"
-// #include "ProcessClass.h"
+#include "process.h"
 
 /**
  * @defgroup Scheduling_rules

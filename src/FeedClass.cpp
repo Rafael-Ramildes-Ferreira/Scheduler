@@ -34,7 +34,7 @@ int Feed::step_time(){
 	if(process == nullptr)
 		if(scheduler->swap_context() == -1)
 			return -1;
-	else if(process->get_time_run()==process->get_duration())
+	else if(process->get_executed_time()==process->get_duration())
 		if(scheduler->swap_context() == -1)
 			return -1;
 	else if (this->scheduler->check_first_in_ready())
@@ -44,7 +44,7 @@ int Feed::step_time(){
 			
 	
 	// Steps time in the program
-	process->run();
+	process->increment_executed_time();
 
 	time++;
 

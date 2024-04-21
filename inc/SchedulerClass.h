@@ -2,10 +2,9 @@
 #define _SCHEDULER_CLASS_H
 
 #include <list>
+#include "process.h"
 
-class Process{};
 class ProcessorCore{};
-class AbstractContex{};
 
 /**
  * @brief Defines basic structure for a Scheduler class
