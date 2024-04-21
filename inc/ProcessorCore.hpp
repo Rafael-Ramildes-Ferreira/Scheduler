@@ -1,5 +1,6 @@
 #ifndef _PROCESSCORE_CLASS_HPP
 #define _PROCESSCORE_CLASS_HPP
+
 #include "AbstractContext.hpp"
 
 
