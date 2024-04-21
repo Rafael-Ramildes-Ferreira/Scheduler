@@ -10,7 +10,7 @@
 */
 class AbstractScheduler {
 	public:
-		AbstractScheduler(unsigned int quanta, unsigned int core_n);
+		AbstractScheduler(unsigned int quanta);
 		AbstractScheduler();
 		~AbstractScheduler();
 		virtual int add_to_ready(Process* process) { return 0; };
@@ -37,7 +37,7 @@ class AbstractScheduler {
 */
 class RMScheduler : public AbstractScheduler {
 	public:
-		RMScheduler(unsigned int quanta, unsigned int core_n) : AbstractScheduler(quanta,core_n) {};
+		RMScheduler(unsigned int quanta) : AbstractScheduler(quanta) {};
 		RMScheduler();
 		int add_to_ready(Process* process) override;
 		bool check_first_in_ready() override;
@@ -54,7 +54,7 @@ class RMScheduler : public AbstractScheduler {
 */
 class EDFScheduler : public AbstractScheduler {
 	public:
-		EDFScheduler(unsigned int quanta, unsigned int core_n) : AbstractScheduler(quanta,core_n) {};
+		EDFScheduler(unsigned int quanta) : AbstractScheduler(quanta) {};
 		EDFScheduler();
 		int add_to_ready(Process* process) override;
 		bool check_first_in_ready() override;

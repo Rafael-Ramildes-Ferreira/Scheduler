@@ -9,7 +9,7 @@ int main(int argc, char* argv[]){
 	// Creates objects
 	File file;
 	file.read_file();
-	Feed rm_feed = *(new Feed(file.get_processes(),RMSCHEDULING));
+	Feed rm_feed(file.get_processes(),RMSCHEDULING);
 
 	// Prints diagram header
 	cout << "Tempo\t";

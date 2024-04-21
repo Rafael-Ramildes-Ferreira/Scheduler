@@ -7,6 +7,7 @@ Process::Process(int creation_time, int duration, int period, int priority)
     this->period = period;
     this->priority = priority;
     this->context = nullptr;
+    this->executed_time = 0;
 }
 
 Process::~Process()

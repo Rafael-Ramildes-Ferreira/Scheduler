@@ -1,4 +1,5 @@
 #include "FeedClass.h"
+#include <iostream>
 
 /**
  * @brief Constructor for the Feed class
@@ -30,16 +31,20 @@ int Feed::step_time(){
 		}
 	}
 
+	for(Process *p: this->get_scheduler()->get_ready_list())
+		std::cout << p << std::endl;
+
 	// Checks the necessity of swaping the context
-	// Process *process = this->scheduler->get_running_process();
-	// if(process == nullptr)
-	// 	retval = scheduler->swap_context();
-	// else if(process->get_state() == FINISHED || this->scheduler->check_first_in_ready())
-	// 	retval = scheduler->swap_context();
+	Process *process = this->scheduler->get_running_process();
+	if(process == nullptr)
+		retval = scheduler->swap_context();
+	else if(process->get_state() == FINISHED || this->scheduler->check_first_in_ready())
+		retval = scheduler->swap_context();
 	
 			
 	
 	// Steps time in the program
+	// process = this->scheduler->get_running_process();
 	// process->increment_executed_time();
 
 	this->time++;

@@ -1,14 +1,14 @@
 #include "SchedulerClass.h"
+#include <iostream>
 
 
 /* Abstract Scheduler methods ------------------------------------------------*/
 /**
  * @brief AbstractScheduler constructor
  * @param quanta: Time quanta to be used
- * @param core_n: Number os cores in the machine
  * @returns New object
 */
-AbstractScheduler::AbstractScheduler(unsigned int quanta, unsigned int core_n){
+AbstractScheduler::AbstractScheduler(unsigned int quanta){
 		this->time_quanta = quanta;
 		this->ready_list = {};
 		this->running_process = nullptr;
@@ -42,15 +42,15 @@ int AbstractScheduler::swap_context(){
 	if(this->ready_list.empty()){
 		return -1;	// Error
 	}
+	
+	std::cout << this->running_process << std::endl;
 
-	// Save the context object
+	// // Save the context object
 	if(this->running_process != nullptr){
-		if(this->running_process->get_executed_time() < this->running_process->get_duration()){
-			AbstractContext *running_context;
-			running_context = this->get_cpu_core()->currentContext();
-			this->running_process->set_context(running_context);
-			this->add_to_ready(this->running_process);
-		}
+		AbstractContext *running_context;
+		running_context = this->get_cpu_core()->currentContext();
+		this->running_process->set_context(running_context);
+		this->add_to_ready(this->running_process);
 	}
 
 	// Pop next process from the ready list
@@ -190,14 +190,19 @@ int RMScheduler::add_to_ready(Process* process){
 		this->set_running_process(nullptr);
 	}
 
-	std::list<Process*>::iterator iter = this->ready_list.begin();
-	for(Process *pP: this->ready_list){
-		if(process->get_priority() > pP->get_priority()){
-			this->ready_list.insert(iter, process);
-			break;
+	std::cout << "passei aqui" << std::endl;
+	std::cout << process->get_creation_time() << std::endl;
+
+	if(!this->ready_list.empty()){
+		std::list<Process*>::iterator iter = this->ready_list.begin();
+		for(Process *pP: this->ready_list){
+			if(process->get_priority() > pP->get_priority()){
+				this->ready_list.insert(iter, process);
+				break;
+			}
+			else std::advance(iter,1);
 		}
-		else std::advance(iter,1);
-	}
+	} else this->ready_list.push_front(process);
 
 	return 0; // No error
 }
