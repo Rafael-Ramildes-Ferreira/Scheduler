@@ -1,11 +1,11 @@
-enum ProcessState {READY, EXECUTING, FINISHED};
+enum ProcessState {CREATED, READY, EXECUTING, FINISHED};
 
 class Process
 {
 
 private:
     int creation_time, duration, priority, executed_time = 0;
-    ProcessState state = READY;
+    ProcessState state = CREATED;
     Context *context;
 
 public:
