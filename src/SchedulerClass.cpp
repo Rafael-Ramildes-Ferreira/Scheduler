@@ -192,8 +192,10 @@ int RMScheduler::add_to_ready(Process* process){
 
 	std::list<Process*>::iterator iter = this->ready_list.begin();
 	for(Process *pP: this->ready_list){
-		if(process->get_priority() > pP->get_priority())
+		if(process->get_priority() > pP->get_priority()){
 			this->ready_list.insert(iter, process);
+			break;
+		}
 		else std::advance(iter,1);
 	}
 

@@ -19,6 +19,7 @@ Feed::Feed(std::list<Process*> p_vec, int rule){
 }
 
 int Feed::step_time(){
+	int retval = 0;
 	// Feeds newer processes to the scheduler
 	for(Process *p: this->processes){
 		if(p->get_creation_time() == this->time ||
@@ -30,22 +31,20 @@ int Feed::step_time(){
 	}
 
 	// Checks the necessity of swaping the context
-	Process *process = this->scheduler->get_running_process();
-	if(process == nullptr)
-		if(scheduler->swap_context() == -1)
-			return -1;
-	else if(process->get_state() == FINISHED || this->scheduler->check_first_in_ready())
-		if(scheduler->swap_context() == -1)
-			return -1;
+	// Process *process = this->scheduler->get_running_process();
+	// if(process == nullptr)
+	// 	retval = scheduler->swap_context();
+	// else if(process->get_state() == FINISHED || this->scheduler->check_first_in_ready())
+	// 	retval = scheduler->swap_context();
 	
 			
 	
 	// Steps time in the program
-	process->increment_executed_time();
+	// process->increment_executed_time();
 
-	time++;
+	this->time++;
 
-	return 0;	// No error
+	return retval;	// No error
 }
 
 unsigned int Feed::get_time(){
