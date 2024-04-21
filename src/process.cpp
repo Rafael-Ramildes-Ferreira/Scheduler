@@ -1,10 +1,11 @@
 #include "process.h"
 
-Process::Process(int creation_time, int duration, int priority, Context *context)
+Process::Process(int creation_time, int duration, int priority, int period, AbstractContext *context)
 {
     this->creation_time = creation_time;
     this->duration = duration;
     this->priority = priority;
+    this->period = period;
     this->context = context;
 }
 
@@ -26,6 +27,11 @@ int Process::get_duration()
 int Process::get_priority()
 {
     return this->priority;
+}
+
+int Process::get_period()
+{
+    return this->period;
 }
 
 int Process::get_executed_time()
@@ -56,6 +62,11 @@ void Process::set_duration(int duration)
 void Process::set_priority(int priority)
 {
     this->priority = priority;
+}
+
+void Process::set_period(int period)
+{
+    this->period = period;
 }
 
 void Process::set_context(Context *context)

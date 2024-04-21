@@ -12,12 +12,12 @@ class Process
 {
 
 private:
-    int creation_time, duration, priority, executed_time = 0;
+    int creation_time, duration, priority, period, executed_time = 0;
     ProcessState state = CREATED;
     AbstractContext *context;
 
 public:
-    Process(int creation_time, int duration, int priority, AbstractContext *context);
+    Process(int creation_time, int duration, int priority, int period, AbstractContext *context);
 
     ~Process();
 
@@ -26,6 +26,8 @@ public:
     int get_duration();
 
     int get_priority();
+
+    int get_period();
 
     int get_executed_time();
 
@@ -38,6 +40,8 @@ public:
     void set_duration(int duration);
 
     void set_priority(int priority);
+
+    void set_period(int priority);
 
     void set_context(AbstractContext *context);
 

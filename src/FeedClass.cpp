@@ -22,7 +22,7 @@ int Feed::step_time(){
 	// Feeds newer processes to the scheduler
 	for(Process *p: this->processes){
 		if(p->get_creation_time() == this->time ||
-			p->get_creation_time()+p->get_period_time() == this->time)
+			p->get_creation_time()+p->get_period() == this->time)
 		{
 			p->set_creation_time(this->time); // Creates the periodicity
 			scheduler->add_to_ready(p);
