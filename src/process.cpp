@@ -63,6 +63,11 @@ void Process::set_context(Context *context)
     this->context = context;
 }
 
+void Process::set_state(ProcessState state)
+{
+    this->state = state;
+}
+
 void Process::increment_executed_time(){
     this->executed_time++;
     if (this->executed_time == 1) {
