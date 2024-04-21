@@ -1,7 +1,6 @@
 #ifndef _PROCESS_H
 #define _PROCESS_H
 
-#include "SchedulerClass.h" // Temporary
 #include "AbstractContext.hpp"
 
 enum ProcessState {CREATED, READY, EXECUTING, FINISHED};
@@ -15,7 +14,7 @@ private:
     AbstractContext *context;
 
 public:
-    Process(int creation_time, int duration, int period, int priority, AbstractContext *context);
+    Process(int creation_time, int duration, int period, int priority);//, AbstractContext *context);
 
     ~Process();
 

@@ -1,7 +1,7 @@
-#ifndef _CONTEXT_CLASS_HPP
-#define _CONTEXT_CLASS_HPP
+#ifndef _INE5412CONTEXT_CLASS_HPP
+#define _INE5412CONTEXT_CLASS_HPP
 #include <stdint.h>
-#include "AbstractContext"
+#include "AbstractContext.hpp"
 
 class INE5412Context : public AbstractContext {
 	private:

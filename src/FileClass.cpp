@@ -1,5 +1,6 @@
 #include <iostream>
 #include "FileClass.h"
+#include "INE5412Context.hpp"
 
 /* File class methods implementation -----------------------------------------*/
 File::File() {
@@ -11,7 +12,7 @@ File::File() {
 
 File::~File() {
 	for(int i = 0; i < processes.size() ; i++) {
-		Process *p = processes[i];
+		Process *p = this->processes[i];
 		delete p;
 	}
 }
@@ -26,14 +27,15 @@ void File::print_processes_params() {
 }
 
 void File::read_file() {
-	int a, b, c;
+	int a, b, c, d, e;
 	
 	if (!myfile.is_open()) {
 		std::cout << "Arquivo não está aberto!" << std::endl;
 	}
 	
-	while (myfile >> a >> b >> c) {
-		Process *p = new Process();//(a, b, c);
+	while (myfile >> a >> b >> c >> d >> e) {
+		Process *p = new Process(a, b, c, e);
+		p->set_context(new INE5412Context());
 		processes.push_back(p);
 	}
 

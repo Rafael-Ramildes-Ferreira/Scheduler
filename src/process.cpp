@@ -1,12 +1,12 @@
 #include "process.h"
 
-Process::Process(int creation_time, int duration, int priority, int period, AbstractContext *context)
+Process::Process(int creation_time, int duration, int period, int priority)
 {
     this->creation_time = creation_time;
     this->duration = duration;
-    this->priority = priority;
     this->period = period;
-    this->context = context;
+    this->priority = priority;
+    this->context = nullptr;
 }
 
 Process::~Process()
