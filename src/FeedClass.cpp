@@ -13,7 +13,7 @@ Feed::Feed(std::list<Process*> p_vec, int rule){
 	this->processes = p_vec;
 	switch(rule){
 		case RMSCHEDULING: this->scheduler = (AbstractScheduler*) &rm_scheduler; break;
-		case EDFSCHEDULING:this->scheduler = (AbstractScheduler*) &edf_scheduler; break;
+		// case EDFSCHEDULING:this->scheduler = (AbstractScheduler*) &edf_scheduler; break;
 	}
 	// this->scheduler->add_cpu_core();
 	this->scheduler->set_time_quanta(1);
@@ -31,9 +31,6 @@ int Feed::step_time(){
 		}
 	}
 
-	for(Process *p: this->get_scheduler()->get_ready_list())
-		std::cout << p << std::endl;
-
 	// Checks the necessity of swaping the context
 	Process *process = this->scheduler->get_running_process();
 	if(process == nullptr)
@@ -44,8 +41,8 @@ int Feed::step_time(){
 			
 	
 	// Steps time in the program
-	// process = this->scheduler->get_running_process();
-	// process->increment_executed_time();
+	process = this->scheduler->get_running_process();
+	process->increment_executed_time();
 
 	this->time++;
 
