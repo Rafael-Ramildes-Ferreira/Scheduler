@@ -1,5 +1,0 @@
-class Context
-{
-public:
-    Context();
-};
