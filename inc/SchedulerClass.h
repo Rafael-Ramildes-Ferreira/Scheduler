@@ -16,7 +16,7 @@ class AbstractScheduler {
 		AbstractScheduler();
 		~AbstractScheduler();
 		virtual int add_to_ready(Process* process) { return 0; };
-		int swap_context(unsigned int core_number);
+		int swap_context();
 		virtual bool check_first_in_ready() { return false;};
 		unsigned int get_time_quanta(void);
 		int set_time_quanta(int quanta);
@@ -24,15 +24,14 @@ class AbstractScheduler {
 		int set_ready_list(std::list<Process*> process_vec);
 		Process* get_running_process(void);
 		int set_running_process(Process* process);
-		std::list<ProcessorCore*> get_cpu_core(void);
-		int set_cpu_core(std::list<ProcessorCore*> core_vec);
-		int add_cpu_core();
+		ProcessorCore* get_cpu_core(void);
+		int set_cpu_core(ProcessorCore* core_vec);
 
 	private:
 		unsigned int time_quanta;
 		std::list<Process*> ready_list;
 		Process* running_process;
-		std::list<ProcessorCore*> cpu_core;
+		ProcessorCore* cpu_core;
 };
 
 /**
@@ -49,7 +48,7 @@ class RMScheduler : public AbstractScheduler {
 		unsigned int time_quanta;
 		std::list<Process*> ready_list;
 		Process* running_process;
-		std::list<ProcessorCore*> cpu_core;
+		ProcessorCore* cpu_core;
 };
 
 /**
@@ -66,7 +65,7 @@ class EDFScheduler : public AbstractScheduler {
 		unsigned int time_quanta;
 		std::list<Process*> ready_list;
 		Process* running_process;
-		std::list<ProcessorCore*> cpu_core;
+		ProcessorCore* cpu_core;
 };
 
 #endif
