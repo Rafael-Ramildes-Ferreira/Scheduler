@@ -32,7 +32,7 @@ class Feed{
 		std::list<Process*> processes;
 		AbstractScheduler *scheduler;
 		RMScheduler rm_scheduler;
-		// EDFScheduler edf_scheduler;
+		EDFScheduler edf_scheduler;
 };
 
 #endif

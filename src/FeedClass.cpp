@@ -13,7 +13,7 @@ Feed::Feed(std::list<Process*> p_vec, int rule){
 	this->processes = p_vec;
 	switch(rule){
 		case RMSCHEDULING: this->scheduler = (AbstractScheduler*) &rm_scheduler; break;
-		// case EDFSCHEDULING:this->scheduler = (AbstractScheduler*) &edf_scheduler; break;
+		case EDFSCHEDULING:this->scheduler = (AbstractScheduler*) &edf_scheduler; break;
 	}
 	// this->scheduler->add_cpu_core();
 	this->scheduler->set_time_quanta(1);
