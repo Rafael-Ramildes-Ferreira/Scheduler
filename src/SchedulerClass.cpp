@@ -35,7 +35,7 @@ AbstractScheduler::~AbstractScheduler(){
 /**
  * @brief Exchange the current running context to the next one, according to the
  * 		Rate Monotonic algorithm
- * @returns id: ID of the running process
+ * @returns 0: if not failed
  * 			-1: if failed
 */
 int AbstractScheduler::swap_context(){
@@ -45,10 +45,10 @@ int AbstractScheduler::swap_context(){
 
 	// Save the context object
 	if(this->running_process != nullptr){
-		if(this->running_process->get_time_run() < this->running_process->get_duration()){
-			AbstractContex *running_contex;
-			running_contex = this->get_cpu_core()->get_context();
-			this->running_process->set_last_context(running_contex);
+		if(this->running_process->get_executed_time() < this->running_process->get_duration()){
+			AbstractContext *running_context;
+			running_context = this->get_cpu_core()->currentContext();
+			this->running_process->set_context(running_context);
 			this->add_to_ready(this->running_process);
 		}
 	}
@@ -61,12 +61,12 @@ int AbstractScheduler::swap_context(){
 	// Save process that will be put to run
 	this->running_process = next_to_run;
 
-	// Loads the next contex
-	AbstractContex *process_last_context;
-	process_last_context = this->running_process->get_last_contex();
-	this->get_cpu_core()->set_context(process_last_context);
+	// Loads the next context
+	AbstractContext *process_last_context;
+	process_last_context = this->running_process->get_context();
+	this->get_cpu_core()->setContext(process_last_context);
 	
-	return this->running_process->get_id(); // No error
+	return 0; // No error
 }
 
 /**
@@ -181,7 +181,7 @@ RMScheduler::RMScheduler(){
 */
 int RMScheduler::add_to_ready(Process* process){
 	// Set ProcessState
-	Process->set_state(READY);
+	process->set_state(READY);
 	
 	// If this process is already on the registered, it's deadline is probably violated
 	// Remove it to re-add in the right place
@@ -190,11 +190,11 @@ int RMScheduler::add_to_ready(Process* process){
 		this->set_running_process(nullptr);
 	}
 
-	int index = 0;
+	std::list<Process*>::iterator iter = this->ready_list.begin();
 	for(Process *pP: this->ready_list){
 		if(process->get_priority() > pP->get_priority())
-			this->ready_list.insert(index, process);
-		else index++;
+			this->ready_list.insert(iter, process);
+		else std::advance(iter,1);
 	}
 
 	return 0; // No error
@@ -206,7 +206,8 @@ int RMScheduler::add_to_ready(Process* process){
  * 			true: if it has
 */
 bool RMScheduler::check_first_in_ready(){
-	if(this->ready_list[0]->get_priority() > this->running_process->get_priority()){
+	Process *first_in_ready = *(this->ready_list.begin());
+	if(first_in_ready->get_priority() > this->running_process->get_priority()){
 		return true;
 	}
 	return false;
@@ -232,7 +233,7 @@ EDFScheduler::EDFScheduler(){
 */
 int EDFScheduler::add_to_ready(Process* process){
 	// Set ProcessState
-	Process->set_state(READY);
+	process->set_state(READY);
 	
 	// If this process is already on the registered, it's deadline is probably violated
 	// Remove it to re-add in the right place
@@ -243,12 +244,12 @@ int EDFScheduler::add_to_ready(Process* process){
 
 	int newbie_deadline = process->get_creation_time() + process->get_period();;
 
-	int index = 0;
+	std::list<Process*>::iterator iter = this->ready_list.begin();
 	for(Process *pP: this->get_ready_list()){
 		int deadline = pP->get_creation_time() + pP->get_period();
 		if(newbie_deadline < deadline)
-			this->ready_list().insert(index,Process);
-		else index++;
+			this->ready_list.insert(iter,process);
+		else std::advance(iter,1);
 	}
 	return 0; // No error
 }
@@ -258,8 +259,9 @@ int EDFScheduler::add_to_ready(Process* process){
  * @returns false: if it has not higher priority
  * 			true: if it has
 */
-bool RMScheduler::check_first_in_ready(){
-	int ready_deadline = this->ready_list[0]->get_creation_time() + this->ready_list[0]->get_period();
+bool EDFScheduler::check_first_in_ready(){
+	Process *first_in_ready = *(this->ready_list.begin());
+	int ready_deadline = first_in_ready->get_creation_time() + first_in_ready->get_period();
 	int running_deadline = this->running_process->get_creation_time() + this->running_process->get_period();
 	if(ready_deadline < running_deadline){
 		return true;

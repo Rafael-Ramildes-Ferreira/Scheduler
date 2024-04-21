@@ -44,7 +44,7 @@ ProcessState Process::get_state()
     return this->state;
 }
 
-Context *Process::get_context()
+AbstractContext *Process::get_context()
 {
     return this->context;
 }
@@ -69,7 +69,7 @@ void Process::set_period(int period)
     this->period = period;
 }
 
-void Process::set_context(Context *context)
+void Process::set_context(AbstractContext *context)
 {
     this->context = context;
 }

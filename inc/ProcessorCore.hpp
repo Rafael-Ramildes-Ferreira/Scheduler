@@ -4,7 +4,7 @@
 #include "AbstractContext.hpp"
 
 
-class ProcessCore {
+class ProcessorCore {
 	private:
 		AbstractContext *context;
 	public:

@@ -1,14 +1,14 @@
 #include "ProcessorCore.hpp"
 #include "AbstractContext.hpp"
 
-void ProcessCore::setContext(AbstractContext *cont_){
+void ProcessorCore::setContext(AbstractContext *cont_){
 	context = cont_;
 	
 }
-AbstractContext* ProcessCore::currentContext(){
+AbstractContext* ProcessorCore::currentContext(){
 	return context;
 }
-AbstractContext* ProcessCore::getOutContext(){
+AbstractContext* ProcessorCore::getOutContext(){
 	AbstractContext *contxt = context;
 	return contxt;
 }

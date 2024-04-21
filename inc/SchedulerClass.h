@@ -3,8 +3,7 @@
 
 #include <list>
 #include "process.h"
-
-class ProcessorCore{};
+#include "ProcessorCore.hpp"
 
 /**
  * @brief Defines basic structure for a Scheduler class

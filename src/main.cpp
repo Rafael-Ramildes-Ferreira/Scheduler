@@ -21,11 +21,11 @@ int main(int argc, char* argv[]){
 
 	// Runs
 	for(int i = 0;i <= 30;i++){
-		rm_feed.step_time()
-		cout << rm_feed.get_time()-1 << rm_feed.get_time();
+		rm_feed.step_time();
+		cout << rm_feed.get_time()-1 << "-" << rm_feed.get_time();
 		cout << "\t";
 		for(Process *p:rm_feed.get_processes()){
-			switch(p->get_current_state()){
+			switch(p->get_state()){
 				case READY:
 					cout << " -- ";
 					break;
