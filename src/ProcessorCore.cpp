@@ -2,13 +2,13 @@
 #include "AbstractContext.hpp"
 
 void ProcessCore::setContext(AbstractContext *cont_){
-	context = &cont_;
+	context = cont_;
 	
 }
-Context* ProcessCore::currentContext(){
-	return &context;
+AbstractContext* ProcessCore::currentContext(){
+	return context;
 }
-Context* ProcessCore::getOutContext(){
-	Context *contxt = &context;
-	return &contxt;
+AbstractContext* ProcessCore::getOutContext(){
+	AbstractContext *contxt = context;
+	return contxt;
 }

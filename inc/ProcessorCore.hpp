@@ -6,11 +6,11 @@
 
 class ProcessCore {
 	private:
-		Context *context;
+		AbstractContext *context;
 	public:
-		void setContext(Context *cont_);
-		Context* currentContext();
-		Context* getOutContext();
+		void setContext(AbstractContext *cont_);
+		AbstractContext* currentContext();
+		AbstractContext* getOutContext();
 };
 
 #endif
