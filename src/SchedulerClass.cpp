@@ -12,9 +12,7 @@ AbstractScheduler::AbstractScheduler(unsigned int quanta, unsigned int core_n){
 		this->time_quanta = quanta;
 		this->ready_list = {};
 		this->running_process = nullptr;
-		this->cpu_core = {};
-		for(int i = 0;i < core_n;i++)
-			this->cpu_core.push_back(new ProcessorCore);
+		this->cpu_core = nullptr;
 }
 
 /**
@@ -25,7 +23,6 @@ AbstractScheduler::AbstractScheduler(){
 		this->time_quanta = 0;
 		this->ready_list = {};
 		this->running_process = nullptr;
-		this->cpu_core = {};
 }
 
 /**
@@ -38,11 +35,10 @@ AbstractScheduler::~AbstractScheduler(){
 /**
  * @brief Exchange the current running context to the next one, according to the
  * 		Rate Monotonic algorithm
- * @param core_number: number of the core which contex has to be swiched
  * @returns id: ID of the running process
  * 			-1: if failed
 */
-int AbstractScheduler::swap_context(unsigned int core_number){
+int AbstractScheduler::swap_context(){
 	if(this->ready_list.empty()){
 		return -1;	// Error
 	}
@@ -51,7 +47,7 @@ int AbstractScheduler::swap_context(unsigned int core_number){
 	if(this->running_process != nullptr){
 		if(this->running_process->get_time_run() < this->running_process->get_duration()){
 			AbstractContex *running_contex;
-			running_contex = this->get_cpu_core()[core_number]->get_context();
+			running_contex = this->get_cpu_core()->get_context();
 			this->running_process->set_last_context(running_contex);
 			this->add_to_ready(this->running_process);
 		}
@@ -68,7 +64,7 @@ int AbstractScheduler::swap_context(unsigned int core_number){
 	// Loads the next contex
 	AbstractContex *process_last_context;
 	process_last_context = this->running_process->get_last_contex();
-	this->get_cpu_core()[core_number]->set_context(process_last_context);
+	this->get_cpu_core()->set_context(process_last_context);
 	
 	return this->running_process->get_id(); // No error
 }
@@ -149,7 +145,7 @@ int AbstractScheduler::set_running_process(Process* process){
  * @brief Gets all CPU registered
  * @return A list of the CPU descriptor object
 */
-std::list<ProcessorCore*> AbstractScheduler::get_cpu_core(){
+ProcessorCore* AbstractScheduler::get_cpu_core(){
 	return this->cpu_core;
 }
 
@@ -159,14 +155,8 @@ std::list<ProcessorCore*> AbstractScheduler::get_cpu_core(){
  * @returns 0: if successfull
  * 			-1: if failed
 */
-int AbstractScheduler::set_cpu_core(std::list<ProcessorCore*> core_vec){
+int AbstractScheduler::set_cpu_core(ProcessorCore* core_vec){
 	this->cpu_core = core_vec;
-
-	return 0; // No error
-}
-
-int AbstractScheduler::add_cpu_core(){
-	this->cpu_core.push_back(new ProcessorCore);
 
 	return 0; // No error
 }
@@ -181,7 +171,6 @@ RMScheduler::RMScheduler(){
 	this->time_quanta = 0;
 	this->ready_list = {};
 	this->running_process = nullptr;
-	this->cpu_core = {};
 }
 
 /**
@@ -230,7 +219,6 @@ EDFScheduler::EDFScheduler(){
 	this->time_quanta = 0;
 	this->ready_list = {};
 	this->running_process = nullptr;
-	this->cpu_core = {};
 }
 
 /**
