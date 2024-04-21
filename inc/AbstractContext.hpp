@@ -1,5 +1,6 @@
 #ifndef _CONTEXT_CLASS_HPP
 #define _CONTEXT_CLASS_HPP
+#include <stdint>
 
 class AbstractContext {
 	private:
