@@ -11,8 +11,11 @@ File::File() {
 }
 
 File::~File() {
-	for(int i = 0; i < processes.size() ; i++) {
-		Process *p = this->processes[i];
+	// std::list<Process*>::iterator iter = processes.begin();
+	// for(int i = 0; i < processes.size() ; i++) {
+	for(Process *process: this->processes) {
+		// std::advance(iter,i);
+		Process *p = process;
 		delete p;
 	}
 }
