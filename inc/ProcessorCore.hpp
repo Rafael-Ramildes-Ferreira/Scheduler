@@ -1,6 +1,6 @@
 #ifndef _PROCESSCORE_CLASS_HPP
 #define _PROCESSCORE_CLASS_HPP
-#include "Context.hpp"
+#include "AbstractContext.hpp"
 
 
 class ProcessCore {
