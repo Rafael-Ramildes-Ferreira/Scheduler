@@ -4,8 +4,8 @@
 
 class AbstractContext {
 	private:
-    	uint64_t sp;
-    	uint64_t pc;
+    	uint64_t sp = 0;
+    	uint64_t pc = 0;
 	public:
 		void setSp(uint64_t sp_);
 		void setPc(uint64_t pc_);

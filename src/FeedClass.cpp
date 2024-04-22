@@ -1,4 +1,5 @@
 #include "FeedClass.h"
+#include <iostream>
 
 /**
  * @brief Constructor for the Feed class
@@ -19,33 +20,40 @@ Feed::Feed(std::list<Process*> p_vec, int rule){
 }
 
 int Feed::step_time(){
+	int retval = 0;
 	// Feeds newer processes to the scheduler
 	for(Process *p: this->processes){
 		if(p->get_creation_time() == this->time ||
 			p->get_creation_time()+p->get_period() == this->time)
 		{
+			// std::cout << "Priority: " << p->get_priority() << std::endl;
 			p->set_creation_time(this->time); // Creates the periodicity
-			scheduler->add_to_ready(p);
+			p->set_executed_time(0); // Creates the periodicity
+			
+			if(p == this->scheduler->get_running_process()){
+				this->scheduler->set_running_process(nullptr);
+			} else this->scheduler->remove_from_ready(p);
+			this->scheduler->add_to_ready(p);
 		}
 	}
 
 	// Checks the necessity of swaping the context
 	Process *process = this->scheduler->get_running_process();
-	if(process == nullptr)
-		if(scheduler->swap_context() == -1)
-			return -1;
-	else if(process->get_state() == FINISHED || this->scheduler->check_first_in_ready())
-		if(scheduler->swap_context() == -1)
-			return -1;
+	if(process == nullptr){
+		retval = this->scheduler->swap_context();
+		}
+	else if(process->get_state() == FINISHED || this->scheduler->check_first_in_ready()){
+		retval = this->scheduler->swap_context();}
 	
 			
 	
 	// Steps time in the program
+	process = this->scheduler->get_running_process();
 	process->increment_executed_time();
 
-	time++;
+	this->time++;
 
-	return 0;	// No error
+	return retval;
 }
 
 unsigned int Feed::get_time(){

@@ -3,7 +3,7 @@
 
 #include <list>
 #include <fstream>
-#include "SchedulerClass.h" // Temporary
+#include "process.h"
 
 
 /**

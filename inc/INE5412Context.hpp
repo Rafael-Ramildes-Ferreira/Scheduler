@@ -1,16 +1,16 @@
-#ifndef _CONTEXT_CLASS_HPP
-#define _CONTEXT_CLASS_HPP
+#ifndef _INE5412CONTEXT_CLASS_HPP
+#define _INE5412CONTEXT_CLASS_HPP
 #include <stdint.h>
-#include "AbstractContext"
+#include "AbstractContext.hpp"
 
 class INE5412Context : public AbstractContext {
 	private:
-    	uint64_t r1;
-    	uint64_t r2;
-    	uint64_t r3;
-    	uint64_t r4;
-    	uint64_t r5;
-    	uint64_t r0;
+    	uint64_t r1 = 0;
+    	uint64_t r2 = 0;
+    	uint64_t r3 = 0;
+    	uint64_t r4 = 0;
+    	uint64_t r5 = 0;
+    	uint64_t r0 = 0;
 	public:
 		void setR1(uint64_t r1_);
 		void setR2(uint64_t r2_);

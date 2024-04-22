@@ -1,15 +1,16 @@
 #ifndef _PROCESSCORE_CLASS_HPP
 #define _PROCESSCORE_CLASS_HPP
+
 #include "AbstractContext.hpp"
 
 
-class ProcessCore {
+class ProcessorCore {
 	private:
-		Context *context;
+		AbstractContext *context;
 	public:
-		void setContext(Context *cont_);
-		Context* currentContext();
-		Context* getOutContext();
+		void setContext(AbstractContext *cont_);
+		AbstractContext* currentContext();
+		AbstractContext* getOutContext();
 };
 
 #endif

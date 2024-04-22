@@ -1,12 +1,13 @@
 #include "process.h"
 
-Process::Process(int creation_time, int duration, int priority, int period, AbstractContext *context)
+Process::Process(int creation_time, int duration, int period, int priority)
 {
     this->creation_time = creation_time;
     this->duration = duration;
-    this->priority = priority;
     this->period = period;
-    this->context = context;
+    this->priority = priority;
+    this->context = nullptr;
+    this->executed_time = 0;
 }
 
 Process::~Process()
@@ -44,7 +45,7 @@ ProcessState Process::get_state()
     return this->state;
 }
 
-Context *Process::get_context()
+AbstractContext *Process::get_context()
 {
     return this->context;
 }
@@ -69,7 +70,7 @@ void Process::set_period(int period)
     this->period = period;
 }
 
-void Process::set_context(Context *context)
+void Process::set_context(AbstractContext *context)
 {
     this->context = context;
 }
@@ -79,11 +80,15 @@ void Process::set_state(ProcessState state)
     this->state = state;
 }
 
+void Process::set_executed_time(int exec_time){
+    this->executed_time = exec_time;
+}
+
 void Process::increment_executed_time(){
     this->executed_time++;
-    if (this->executed_time == 1) {
-        this->state = EXECUTING;
-    } else if (this->executed_time == duration) {
+    if (this->executed_time == this->duration) {
         this->state = FINISHED;
+    } else {
+        this->state = EXECUTING;
     }
 };
