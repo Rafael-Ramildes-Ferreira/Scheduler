@@ -44,6 +44,8 @@ public:
 
     void set_state(ProcessState state);
 
+    void set_executed_time(int exec_time);
+
     void increment_executed_time();
 
 };

@@ -179,10 +179,13 @@ int RMScheduler::swap_context(){
 
 	// Save the context object
 	if(this->running_process != nullptr){
+		// std::cout << "Executed time: " << this->running_process->get_executed_time() << std::endl;
+		// std::cout << "duration time: " << this->running_process->get_duration() << std::endl;
 		AbstractContext *running_context;
 		running_context = this->get_cpu_core()->currentContext();
 		this->running_process->set_context(running_context);
-		this->add_to_ready(this->running_process);
+		if(this->running_process->get_state() != FINISHED)
+			this->add_to_ready(this->running_process);
 	}
 
 	// Pop next process from the ready list
@@ -333,6 +336,8 @@ int RMScheduler::add_to_ready(Process* process){
 bool RMScheduler::check_first_in_ready(){
 	Process *first_in_ready = *(this->ready_list.begin());
 	if(first_in_ready->get_priority() > this->running_process->get_priority()){
+		// std::cout << "first_in_ready->get_priority(): " <<first_in_ready->get_priority() <<std::endl;
+		// std::cout << "this->running_process->get_priority(): " <<this->running_process->get_priority() <<std::endl;
 		return true;
 	}
 	return false;

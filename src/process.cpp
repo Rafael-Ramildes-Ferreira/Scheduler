@@ -80,11 +80,15 @@ void Process::set_state(ProcessState state)
     this->state = state;
 }
 
+void Process::set_executed_time(int exec_time){
+    this->executed_time = exec_time;
+}
+
 void Process::increment_executed_time(){
     this->executed_time++;
-    if (this->executed_time == 1) {
-        this->state = EXECUTING;
-    } else if (this->executed_time == duration) {
+    if (this->executed_time == this->duration) {
         this->state = FINISHED;
+    } else {
+        this->state = EXECUTING;
     }
 };

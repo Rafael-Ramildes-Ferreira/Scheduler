@@ -27,16 +27,22 @@ int Feed::step_time(){
 			p->get_creation_time()+p->get_period() == this->time)
 		{
 			p->set_creation_time(this->time); // Creates the periodicity
+			p->set_executed_time(0); // Creates the periodicity
 			scheduler->add_to_ready(p);
 		}
 	}
 
 	// Checks the necessity of swaping the context
 	Process *process = this->scheduler->get_running_process();
-	if(process == nullptr)
-		retval = scheduler->swap_context();
-	else if(process->get_state() == FINISHED || this->scheduler->check_first_in_ready())
-		retval = scheduler->swap_context();
+	if(process == nullptr){
+		std::cout << "No running process" << std::endl;
+		retval = this->scheduler->swap_context();}
+	else if(process->get_state() == FINISHED){//} ||
+		std::cout << "process->get_state() == FINISHED" << std::endl;
+		retval = this->scheduler->swap_context();} 
+	else if(this->scheduler->check_first_in_ready()){
+		std::cout << "this->scheduler->check_first_in_ready()" << std::endl;
+		retval = this->scheduler->swap_context();}
 	
 			
 	
@@ -46,7 +52,7 @@ int Feed::step_time(){
 
 	this->time++;
 
-	return retval;	// No error
+	return retval;
 }
 
 unsigned int Feed::get_time(){
