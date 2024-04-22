@@ -30,7 +30,10 @@ int Feed::step_time(){
 			p->set_creation_time(this->time); // Creates the periodicity
 			p->set_executed_time(0); // Creates the periodicity
 			
-			if(!this->scheduler->is_in_ready(p)) scheduler->add_to_ready(p);
+			if(p == this->scheduler->get_running_process()){
+				this->scheduler->set_running_process(nullptr);
+			} else this->scheduler->remove_from_ready(p);
+			this->scheduler->add_to_ready(p);
 		}
 	}
 

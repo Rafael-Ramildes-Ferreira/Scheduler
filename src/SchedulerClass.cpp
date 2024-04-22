@@ -245,13 +245,15 @@ bool RMScheduler::check_first_in_ready(){
 	return false;
 }
 
-bool RMScheduler::is_in_ready(Process* process){
-	bool is_in_ready = false;
-	for(Process *p: this->ready_list){
-		if(p == process) is_in_ready = true;
+void RMScheduler::remove_from_ready(Process* process){
+	// for(Process *p: this->ready_list){
+	std::list<Process*>::iterator iter = this->ready_list.begin();
+	for(;iter != this->ready_list.end(); ++iter){
+		if((*iter) == process){
+			this->ready_list.erase(iter);
+			break;
+		}
 	}
-
-	return is_in_ready;
 }
 
 /**
@@ -447,16 +449,15 @@ bool EDFScheduler::check_first_in_ready(){
 	return false;
 }
 
-bool EDFScheduler::is_in_ready(Process* process){
-	bool is_in_ready = false;
-	for(Process *p: this->ready_list){
-		if(p == process){
-			is_in_ready = true;
+void EDFScheduler::remove_from_ready(Process* process){
+	// for(Process *p: this->ready_list){
+	std::list<Process*>::iterator iter = this->ready_list.begin();
+	for(;iter != this->ready_list.end();++iter){
+		if((*iter) == process){
+			this->ready_list.erase(iter);
 			break;
 		}
 	}
-	
-	return is_in_ready;
 }
 
 /**
