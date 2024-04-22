@@ -33,7 +33,9 @@ int Feed::step_time(){
 					if(running_process->get_state() != FINISHED){
 						running_process->miss_deadline();
 					} else if (running_process->get_state() == FINISHED){
-						p->update_mean_turnaround_time(this->time - running_process->get_creation_time());
+						running_process->update_mean_turnaround_time(
+							this->time - running_process->get_creation_time()
+							);
 					}
 				}
 
@@ -63,11 +65,9 @@ int Feed::step_time(){
 		process->update_mean_turnaround_time(this->time-process->get_creation_time());
 		retval = this->scheduler->swap_context();
 		this->number_of_swaps++;
-		// std::cout << "process->get_state() == FINISHED" << std::endl;
 	} else if(this->scheduler->check_first_in_ready()){
 		retval = this->scheduler->swap_context();
 		this->number_of_swaps++;
-		// std::cout << "this->scheduler->check_first_in_ready()" << std::endl;
 	}	
 			
 	
