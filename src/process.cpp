@@ -40,6 +40,18 @@ int Process::get_executed_time()
     return this->executed_time;
 }
 
+int Process::get_waited_time(){
+    return this->waited_time;
+}
+
+double Process::get_mean_turnaround_time(){
+    return this->mean_turnaround_time;
+}
+
+unsigned int Process::get_miss_deadline(){
+    return this->missed_deadline;
+}
+
 ProcessState Process::get_state()
 {
     return this->state;
@@ -70,6 +82,10 @@ void Process::set_period(int period)
     this->period = period;
 }
 
+void Process::set_miss_deadline(unsigned int deadline){
+    this->missed_deadline = deadline;
+}
+
 void Process::set_context(AbstractContext *context)
 {
     this->context = context;
@@ -84,11 +100,29 @@ void Process::set_executed_time(int exec_time){
     this->executed_time = exec_time;
 }
 
+void Process::set_waited_time(int wait_time){
+    this->waited_time = wait_time;
+}
+
 void Process::increment_executed_time(){
+
     this->executed_time++;
     if (this->executed_time == this->duration) {
         this->state = FINISHED;
     } else {
         this->state = EXECUTING;
     }
-};
+}
+
+void Process::increment_waited_time(){
+    this->waited_time++;
+}
+
+void Process::update_mean_turnaround_time(int turnaround_time){
+    this->ending_counts++;
+    this->mean_turnaround_time = (turnaround_time + (this->ending_counts-1)*this->mean_turnaround_time)/this->ending_counts;
+}
+
+void Process::miss_deadline(){
+    this->missed_deadline++;
+}
