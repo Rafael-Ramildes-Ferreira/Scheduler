@@ -22,17 +22,22 @@ Feed::Feed(std::list<Process*> p_vec, int rule){
 int Feed::step_time(){
 	int retval = 0;
 	// Feeds newer processes to the scheduler
+		// std::cout << "Itering throught the processes" << std::endl;
 	for(Process *p: this->processes){
 		if(p->get_creation_time() == this->time ||
 			p->get_creation_time()+p->get_period() == this->time)
 		{
+		// std::cout << "Trying to readd process" << std::endl;
 			p->set_creation_time(this->time); // Creates the periodicity
 			p->set_executed_time(0); // Creates the periodicity
-			scheduler->add_to_ready(p);
+			
+			if(!this->scheduler->is_in_ready(p)) scheduler->add_to_ready(p);
+			else std::cout << "Eureka!!" << std::endl;
 		}
 	}
 
 	// Checks the necessity of swaping the context
+	// std::cout << "Trying to create process" << std::endl;
 	Process *process = this->scheduler->get_running_process();
 	if(process == nullptr){
 		std::cout << "No running process" << std::endl;

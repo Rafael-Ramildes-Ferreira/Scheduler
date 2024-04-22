@@ -204,6 +204,62 @@ int RMScheduler::swap_context(){
 }
 
 /**
+ * @brief Adds a Process to the ready list in the appropriated position
+ * @param process: The Process descriptor object to be added
+ * @returns 0: if successfull
+ * 			-1: if failed
+*/
+int RMScheduler::add_to_ready(Process* process){
+	// Set ProcessState
+	process->set_state(READY);
+	
+	// If this process is already on the registered, it's deadline is probably violated
+	// Remove it to re-add in the right place
+	this->ready_list.remove(process);
+	if(this->running_process == process){
+		this->set_running_process(nullptr);
+	}
+
+
+	std::list<Process*>::iterator iter = this->ready_list.begin();
+	if(!this->ready_list.empty()){
+		for (; iter != this->get_ready_list().end(); ++iter) {
+			if(process->get_priority() > (*iter)->get_priority()){
+				break;
+			}
+		}
+	} 
+	this->ready_list.insert(iter, process);
+
+
+	return 0; // No error
+}
+
+/**
+ * @brief Tests if the first process has higher priority as the running process
+ * @returns false: if it has not higher priority
+ * 			true: if it has
+*/
+bool RMScheduler::check_first_in_ready(){
+	Process *first_in_ready = *(this->ready_list.begin());
+	if(first_in_ready->get_priority() > this->running_process->get_priority()){
+		// std::cout << "first_in_ready->get_priority(): " <<first_in_ready->get_priority() <<std::endl;
+		// std::cout << "this->running_process->get_priority(): " <<this->running_process->get_priority() <<std::endl;
+		return true;
+	}
+	return false;
+}
+
+bool RMScheduler::is_in_ready(Process* process){
+	bool is_in_ready = false;
+	for(Process *p: this->ready_list){
+		if(p == process) is_in_ready = true;
+	}
+
+	return is_in_ready;
+}
+
+/**
  * @brief Gets the time quanta the SO is setup to use
  * @returns time_quanta
 */
@@ -295,13 +351,64 @@ int RMScheduler::set_cpu_core(ProcessorCore* core_vec){
 	return 0; // No error
 }
 
+
+/* EDF Scheduler methods -----------------------------------------------------*/
+/**
+ * @brief Constructor with no input, necessary for the feed class, which 
+ * automatically creates schedulers
+*/
+EDFScheduler::EDFScheduler(){
+	this->time_quanta = 0;
+	this->ready_list = {};
+	this->running_process = nullptr;
+}
+
+/**
+ * @brief Exchange the current running context to the next one, according to the
+ * 		Rate Monotonic algorithm
+ * @returns 0: if not failed
+ * 			-1: if failed
+*/
+int EDFScheduler::swap_context(){
+	if(this->ready_list.empty()){
+		std::cout << "Lista vazia" << std::endl;
+		return -1;	// Error
+	}
+
+	// Save the context object
+	if(this->running_process != nullptr){
+		// std::cout << "Executed time: " << this->running_process->get_executed_time() << std::endl;
+		// std::cout << "duration time: " << this->running_process->get_duration() << std::endl;
+		AbstractContext *running_context;
+		running_context = this->get_cpu_core()->currentContext();
+		this->running_process->set_context(running_context);
+		if(this->running_process->get_state() != FINISHED)
+			this->add_to_ready(this->running_process);
+	}
+
+	// Pop next process from the ready list
+	Process *next_to_run;
+	next_to_run = this->ready_list.front();
+	this->ready_list.erase(this->ready_list.begin());
+
+	// Save process that will be put to run
+	this->running_process = next_to_run;
+
+	// Loads the next context
+	AbstractContext *process_last_context;
+	process_last_context = this->running_process->get_context();
+	this->cpu_core->setContext(process_last_context);
+	
+	return 0; // No error
+}
+
 /**
  * @brief Adds a Process to the ready list in the appropriated position
  * @param process: The Process descriptor object to be added
  * @returns 0: if successfull
  * 			-1: if failed
 */
-int RMScheduler::add_to_ready(Process* process){
+int EDFScheduler::add_to_ready(Process* process){
 	// Set ProcessState
 	process->set_state(READY);
 	
@@ -332,61 +439,26 @@ int RMScheduler::add_to_ready(Process* process){
  * @returns false: if it has not higher priority
  * 			true: if it has
 */
-bool RMScheduler::check_first_in_ready(){
+bool EDFScheduler::check_first_in_ready(){
 	Process *first_in_ready = *(this->ready_list.begin());
-	if(first_in_ready->get_priority() > this->running_process->get_priority()){
-		// std::cout << "first_in_ready->get_priority(): " <<first_in_ready->get_priority() <<std::endl;
-		// std::cout << "this->running_process->get_priority(): " <<this->running_process->get_priority() <<std::endl;
+	int ready_deadline = first_in_ready->get_creation_time() + first_in_ready->get_period();
+	int running_deadline = this->running_process->get_creation_time() + this->running_process->get_period();
+	if(ready_deadline < running_deadline){
 		return true;
 	}
 	return false;
 }
 
-
-/* EDF Scheduler methods -----------------------------------------------------*/
-/**
- * @brief Constructor with no input, necessary for the feed class, which 
- * automatically creates schedulers
-*/
-EDFScheduler::EDFScheduler(){
-	this->time_quanta = 0;
-	this->ready_list = {};
-	this->running_process = nullptr;
-}
-
-/**
- * @brief Exchange the current running context to the next one, according to the
- * 		Rate Monotonic algorithm
- * @returns 0: if not failed
- * 			-1: if failed
-*/
-int EDFScheduler::swap_context(){
-	if(this->ready_list.empty()){
-		return -1;	// Error
+bool EDFScheduler::is_in_ready(Process* process){
+	bool is_in_ready = false;
+	for(Process *p: this->ready_list){
+		if(p == process){
+			is_in_ready = true;
+			break;
+		}
 	}
-
-	// Save the context object
-	if(this->running_process != nullptr){
-		AbstractContext *running_context;
-		running_context = this->get_cpu_core()->currentContext();
-		this->running_process->set_context(running_context);
-		this->add_to_ready(this->running_process);
-	}
-
-	// Pop next process from the ready list
-	Process *next_to_run;
-	next_to_run = this->ready_list.front();
-	this->ready_list.erase(this->ready_list.begin());
-
-	// Save process that will be put to run
-	this->running_process = next_to_run;
-
-	// Loads the next context
-	AbstractContext *process_last_context;
-	process_last_context = this->running_process->get_context();
-	this->get_cpu_core()->setContext(process_last_context);
 	
-	return 0; // No error
+	return is_in_ready;
 }
 
 /**
@@ -471,48 +543,4 @@ int EDFScheduler::set_cpu_core(ProcessorCore* core_vec){
 	this->cpu_core = core_vec;
 
 	return 0; // No error
-}
-
-/**
- * @brief Adds a Process to the ready list in the appropriated position
- * @param process: The Process descriptor object to be added
- * @returns 0: has not swaped the context
- * 			1: has swaped the context
-*/
-int EDFScheduler::add_to_ready(Process* process){
-	// Set ProcessState
-	process->set_state(READY);
-	
-	// If this process is already on the registered, it's deadline is probably violated
-	// Remove it to re-add in the right place
-	this->ready_list.remove(process);
-	if(this->running_process == process){
-		this->set_running_process(nullptr);
-	}
-
-	int newbie_deadline = process->get_creation_time() + process->get_period();;
-
-	std::list<Process*>::iterator iter = this->ready_list.begin();
-	for(Process *pP: this->get_ready_list()){
-		int deadline = pP->get_creation_time() + pP->get_period();
-		if(newbie_deadline < deadline)
-			this->ready_list.insert(iter,process);
-		else std::advance(iter,1);
-	}
-	return 0; // No error
-}
-
-/**
- * @brief Tests if the first process has higher priority as the running process
- * @returns false: if it has not higher priority
- * 			true: if it has
-*/
-bool EDFScheduler::check_first_in_ready(){
-	Process *first_in_ready = *(this->ready_list.begin());
-	int ready_deadline = first_in_ready->get_creation_time() + first_in_ready->get_period();
-	int running_deadline = this->running_process->get_creation_time() + this->running_process->get_period();
-	if(ready_deadline < running_deadline){
-		return true;
-	}
-	return false;
 }
