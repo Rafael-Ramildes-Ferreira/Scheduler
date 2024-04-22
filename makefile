@@ -1,28 +1,27 @@
 PROJECT_MAIN := Scheduler
 CXX := g++
 
-FLAGS := -I./inc/
-
 SRC_DIR := src
 INC_DIR := inc
 OBJ_DIR := obj
 
+FLAGS := -I./$(INC_DIR)/
+
 SRC := $(wildcard $(SRC_DIR)/*.cpp)
-INC := $(wildcard $(INC_DIR)/*.h)
+INC := $(wildcard $(INC_DIR)/*.h $(INC_DIR)/*.hpp)
 OBJ := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC))
 
 all: $(PROJECT_MAIN)
 
 $(PROJECT_MAIN): $(OBJ)
-	echo $(SRC)
 	$(CXX) -o $@ $^
 
-obj/%.o: $(SRC) $(INC) obj
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(INC) $(OBJ_DIR)
 	$(CXX) -o $@ -c $< $(FLAGS)
 
-obj: 
-	mkdir obj
+$(OBJ_DIR):
+	mkdir $(OBJ_DIR)
 
 clean:
-	rm -rf obj
-	rm Scheduler
+	rm -rf $(OBJ_DIR)
+	rm $(PROJECT_MAIN)
