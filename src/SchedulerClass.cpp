@@ -1,5 +1,4 @@
 #include "SchedulerClass.h"
-#include "INE5412Context.hpp"
 #include <iostream>
 
 
@@ -197,9 +196,9 @@ int RMScheduler::swap_context(){
 	this->running_process = next_to_run;
 
 	// Loads the next context
-	INE5412Context *process_last_context;
-	process_last_context = (INE5412Context*) this->running_process->get_context();
-	this->cpu_core->setContext((AbstractContext*) process_last_context);
+	AbstractContext *process_last_context;
+	process_last_context = this->running_process->get_context();
+	this->cpu_core->setContext(process_last_context);
 	
 	return 0; // No error
 }
