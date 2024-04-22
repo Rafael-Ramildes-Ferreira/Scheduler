@@ -40,6 +40,10 @@ int Process::get_executed_time()
     return this->executed_time;
 }
 
+int Process::get_waited_time(){
+    return this->waited_time;
+}
+
 unsigned int Process::get_miss_deadline(){
     return this->missed_deadline;
 }
@@ -92,6 +96,10 @@ void Process::set_executed_time(int exec_time){
     this->executed_time = exec_time;
 }
 
+void Process::set_waited_time(int wait_time){
+    this->waited_time = wait_time;
+}
+
 void Process::increment_executed_time(){
     this->executed_time++;
     if (this->executed_time == this->duration) {
@@ -99,6 +107,10 @@ void Process::increment_executed_time(){
     } else {
         this->state = EXECUTING;
     }
+}
+
+void Process::increment_waited_time(){
+    this->waited_time++;
 }
 
 void Process::miss_deadline(){

@@ -9,7 +9,8 @@ class Process
 {
 
 private:
-    int creation_time, duration, priority, period, executed_time = 0;
+    int creation_time, duration, priority, period;
+    int executed_time = 0, waited_time = 0;
     unsigned int missed_deadline = 0;
     ProcessState state = CREATED;
     AbstractContext *context;
@@ -29,6 +30,8 @@ public:
 
     int get_executed_time();
 
+    int get_waited_time();
+
     unsigned int get_miss_deadline();
 
     ProcessState get_state();
@@ -45,6 +48,8 @@ public:
 
     void set_executed_time(int exec_time);
 
+    void set_waited_time(int wait_time);
+
     void set_miss_deadline(unsigned int deadline);
 
     void set_context(AbstractContext *context);
@@ -52,6 +57,8 @@ public:
     void set_state(ProcessState state);
 
     void increment_executed_time();
+
+    void increment_waited_time();
 
     void miss_deadline();
 

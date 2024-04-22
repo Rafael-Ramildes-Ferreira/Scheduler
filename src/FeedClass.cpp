@@ -58,6 +58,9 @@ int Feed::step_time(){
 	// Steps time in the program
 	process = this->scheduler->get_running_process();
 	process->increment_executed_time();
+	for(Process* p:this->get_scheduler()->get_ready_list()){
+		p->increment_waited_time();
+	}
 
 	this->time++;
 

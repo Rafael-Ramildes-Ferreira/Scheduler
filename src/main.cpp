@@ -51,8 +51,16 @@ int main(int argc, char* argv[]){
 		cout << "  " << p->get_miss_deadline() << " ";
 	}
 	cout << endl;
-	cout << "Number of context swaps:";
+	cout << "Number of context swaps: ";
 	cout << rm_feed.get_number_of_swaps() << endl;
+	cout << "Time waited by each process:" << endl;
+	for(Process* p:rm_feed.get_processes()){
+		cout << " P" << ++i << " ";
+	}
+	cout << endl;
+	for(Process* p:rm_feed.get_processes()){
+		cout << "  " << p->get_waited_time() << " ";
+	}
 	cout << endl;
 
 	
@@ -104,6 +112,14 @@ int main(int argc, char* argv[]){
 	cout << endl;
 	cout << "Number of context swaps: ";
 	cout << edf_feed.get_number_of_swaps() << endl;
+	cout << "Time waited by each process:" << endl;
+	for(Process* p:edf_feed.get_processes()){
+		cout << " P" << ++i << " ";
+	}
+	cout << endl;
+	for(Process* p:edf_feed.get_processes()){
+		cout << "  " << p->get_waited_time() << " ";
+	}
 	cout << endl;
 	
 
