@@ -42,6 +42,7 @@ int main(int argc, char* argv[]){
 		}
 		cout << endl;
 	}
+	cout << endl;
 	cout << "Deadlines missed:" << endl;
 	for(Process* p:rm_feed.get_processes()){
 		cout << " P" << ++i << " ";
@@ -100,16 +101,18 @@ int main(int argc, char* argv[]){
 					cout << " -- ";
 					break;
 				case EXECUTING:
+				case FINISHED:
 					cout << " ## ";
 					break;
 				case CREATED:
-				case FINISHED:
+				case REMOVED:
 					cout << "    ";
 					break;
 			}
 		}
 		cout << endl;
 	}
+	cout << endl;
 	cout << "Deadlines missed:" << endl;
 	for(Process* p:edf_feed.get_processes()){
 		cout << " P" << ++i << " ";

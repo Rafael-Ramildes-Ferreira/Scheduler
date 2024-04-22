@@ -44,7 +44,7 @@ int Process::get_waited_time(){
     return this->waited_time;
 }
 
-int Process::get_mean_turnaround_time(){
+double Process::get_mean_turnaround_time(){
     return this->mean_turnaround_time;
 }
 
@@ -119,10 +119,8 @@ void Process::increment_waited_time(){
 }
 
 void Process::update_mean_turnaround_time(int turnaround_time){
-    static int ending_counts = 0;
-
-    ending_counts++;
-    this->mean_turnaround_time = (turnaround_time + (ending_counts-1)*this->mean_turnaround_time)/ending_counts;
+    this->ending_counts++;
+    this->mean_turnaround_time = (turnaround_time + (this->ending_counts-1)*this->mean_turnaround_time)/this->ending_counts;
 }
 
 void Process::miss_deadline(){
