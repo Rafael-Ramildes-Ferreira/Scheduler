@@ -26,7 +26,6 @@ int Feed::step_time(){
 		if(p->get_creation_time() == this->time ||
 			p->get_creation_time()+p->get_period() == this->time)
 		{
-			// std::cout << "Priority: " << p->get_priority() << std::endl;
 			p->set_creation_time(this->time); // Creates the periodicity
 			p->set_executed_time(0); // Creates the periodicity
 			
@@ -34,7 +33,7 @@ int Feed::step_time(){
 				this->scheduler->set_running_process(nullptr);
 				p->miss_deadline();
 			} else if(this->scheduler->remove_from_ready(p))
-					p->miss_deadline();
+				p->miss_deadline();
 
 			this->scheduler->add_to_ready(p);
 		}
@@ -46,8 +45,10 @@ int Feed::step_time(){
 		retval = this->scheduler->swap_context();
 	} else if(process->get_state() == FINISHED){
 		retval = this->scheduler->swap_context();
+		// std::cout << "process->get_state() == FINISHED" << std::endl;
 	} else if(this->scheduler->check_first_in_ready()){
 		retval = this->scheduler->swap_context();
+		// std::cout << "this->scheduler->check_first_in_ready()" << std::endl;
 	}	
 			
 	

@@ -42,7 +42,7 @@ int main(int argc, char* argv[]){
 		}
 		cout << endl;
 	}
-	cout << "Deaslines missed:" << endl;
+	cout << "Deadlines missed:" << endl;
 	for(Process* p:rm_feed.get_processes()){
 		cout << " P" << ++i << " ";
 	}
@@ -90,7 +90,7 @@ int main(int argc, char* argv[]){
 		}
 		cout << endl;
 	}
-	cout << "Deaslines missed:" << endl;
+	cout << "Deadlines missed:" << endl;
 	for(Process* p:edf_feed.get_processes()){
 		cout << " P" << ++i << " ";
 	}
