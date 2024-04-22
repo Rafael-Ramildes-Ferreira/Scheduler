@@ -43,11 +43,14 @@ int Feed::step_time(){
 	Process *process = this->scheduler->get_running_process();
 	if(process == nullptr){
 		retval = this->scheduler->swap_context();
+		this->number_of_swaps++;
 	} else if(process->get_state() == FINISHED){
 		retval = this->scheduler->swap_context();
+		this->number_of_swaps++;
 		// std::cout << "process->get_state() == FINISHED" << std::endl;
 	} else if(this->scheduler->check_first_in_ready()){
 		retval = this->scheduler->swap_context();
+		this->number_of_swaps++;
 		// std::cout << "this->scheduler->check_first_in_ready()" << std::endl;
 	}	
 			
@@ -69,6 +72,16 @@ int Feed::set_time(int t){
 	this->time = t;
 
 	return 0;	// No error
+}
+
+unsigned int Feed::get_number_of_swaps(){
+	return this->number_of_swaps;
+}
+
+int Feed::set_number_of_swaps(unsigned int number){
+	this->number_of_swaps = number;
+
+	return 0; // No error
 }
 
 std::list<Process*> Feed::get_processes(){

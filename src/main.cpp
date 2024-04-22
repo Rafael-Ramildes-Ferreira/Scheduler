@@ -51,6 +51,9 @@ int main(int argc, char* argv[]){
 		cout << "  " << p->get_miss_deadline() << " ";
 	}
 	cout << endl;
+	cout << "Number of context swaps:";
+	cout << rm_feed.get_number_of_swaps() << endl;
+	cout << endl;
 
 	
 	cout << endl;
@@ -98,6 +101,9 @@ int main(int argc, char* argv[]){
 	for(Process* p:edf_feed.get_processes()){
 		cout << "  " << p->get_miss_deadline() << " ";
 	}
+	cout << endl;
+	cout << "Number of context swaps: ";
+	cout << edf_feed.get_number_of_swaps() << endl;
 	cout << endl;
 	
 
