@@ -172,14 +172,11 @@ RMScheduler::RMScheduler(){
 */
 int RMScheduler::swap_context(){
 	if(this->ready_list.empty()){
-		std::cout << "Lista vazia" << std::endl;
 		return -1;	// Error
 	}
 
 	// Save the context object
 	if(this->running_process != nullptr){
-		// std::cout << "Executed time: " << this->running_process->get_executed_time() << std::endl;
-		// std::cout << "duration time: " << this->running_process->get_duration() << std::endl;
 		AbstractContext *running_context;
 		running_context = this->get_cpu_core()->currentContext();
 		this->running_process->set_context(running_context);
@@ -223,7 +220,7 @@ int RMScheduler::add_to_ready(Process* process){
 
 	std::list<Process*>::iterator iter = this->ready_list.begin();
 	if(!this->ready_list.empty()){
-		for (; iter != this->get_ready_list().end(); ++iter) {
+		for (; iter != this->ready_list.end(); ++iter) {
 			if(process->get_priority() > (*iter)->get_priority()){
 				break;
 			}
@@ -243,8 +240,6 @@ int RMScheduler::add_to_ready(Process* process){
 bool RMScheduler::check_first_in_ready(){
 	Process *first_in_ready = *(this->ready_list.begin());
 	if(first_in_ready->get_priority() > this->running_process->get_priority()){
-		// std::cout << "first_in_ready->get_priority(): " <<first_in_ready->get_priority() <<std::endl;
-		// std::cout << "this->running_process->get_priority(): " <<this->running_process->get_priority() <<std::endl;
 		return true;
 	}
 	return false;
@@ -372,14 +367,11 @@ EDFScheduler::EDFScheduler(){
 */
 int EDFScheduler::swap_context(){
 	if(this->ready_list.empty()){
-		std::cout << "Lista vazia" << std::endl;
 		return -1;	// Error
 	}
 
 	// Save the context object
 	if(this->running_process != nullptr){
-		// std::cout << "Executed time: " << this->running_process->get_executed_time() << std::endl;
-		// std::cout << "duration time: " << this->running_process->get_duration() << std::endl;
 		AbstractContext *running_context;
 		running_context = this->get_cpu_core()->currentContext();
 		this->running_process->set_context(running_context);
@@ -410,6 +402,7 @@ int EDFScheduler::swap_context(){
  * 			-1: if failed
 */
 int EDFScheduler::add_to_ready(Process* process){
+	// std::cout << "Chamado" << std::endl;
 	// Set ProcessState
 	process->set_state(READY);
 	
@@ -423,8 +416,12 @@ int EDFScheduler::add_to_ready(Process* process){
 
 	std::list<Process*>::iterator iter = this->ready_list.begin();
 	if(!this->ready_list.empty()){
-		for (; iter != this->get_ready_list().end(); ++iter) {
-			if(process->get_priority() > (*iter)->get_priority()){
+		for (; iter != this->ready_list.end(); ++iter) {
+			int newbie_deadline = process->get_creation_time() + process->get_period();
+			int old_deadline = (*iter)->get_creation_time() + (*iter)->get_period();
+			// std::cout << "newbie_deadline: " << newbie_deadline << std::endl;
+			// std::cout << "old_deadline: " << old_deadline << std::endl;
+			if(newbie_deadline < old_deadline){
 				break;
 			}
 		}
