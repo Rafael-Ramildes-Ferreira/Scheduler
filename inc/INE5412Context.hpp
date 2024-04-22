@@ -11,6 +11,7 @@ class INE5412Context : public AbstractContext {
     	uint64_t r4 = 0;
     	uint64_t r5 = 0;
     	uint64_t r0 = 0;
+    	uint64_t st = 0;
 	public:
 		void setR1(uint64_t r1_);
 		void setR2(uint64_t r2_);
