@@ -44,6 +44,10 @@ int Process::get_waited_time(){
     return this->waited_time;
 }
 
+int Process::get_mean_turnaround_time(){
+    return this->mean_turnaround_time;
+}
+
 unsigned int Process::get_miss_deadline(){
     return this->missed_deadline;
 }
@@ -101,6 +105,7 @@ void Process::set_waited_time(int wait_time){
 }
 
 void Process::increment_executed_time(){
+
     this->executed_time++;
     if (this->executed_time == this->duration) {
         this->state = FINISHED;
@@ -111,6 +116,13 @@ void Process::increment_executed_time(){
 
 void Process::increment_waited_time(){
     this->waited_time++;
+}
+
+void Process::update_mean_turnaround_time(int turnaround_time){
+    static int ending_counts = 0;
+
+    ending_counts++;
+    this->mean_turnaround_time = (turnaround_time + (ending_counts-1)*this->mean_turnaround_time)/ending_counts;
 }
 
 void Process::miss_deadline(){

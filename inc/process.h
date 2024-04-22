@@ -10,7 +10,7 @@ class Process
 
 private:
     int creation_time, duration, priority, period;
-    int executed_time = 0, waited_time = 0;
+    int executed_time = 0, waited_time = 0, mean_turnaround_time = 0;
     unsigned int missed_deadline = 0;
     ProcessState state = CREATED;
     AbstractContext *context;
@@ -31,6 +31,8 @@ public:
     int get_executed_time();
 
     int get_waited_time();
+
+    int get_mean_turnaround_time();
 
     unsigned int get_miss_deadline();
 
@@ -59,6 +61,8 @@ public:
     void increment_executed_time();
 
     void increment_waited_time();
+
+    void update_mean_turnaround_time(int turnaround_time);
 
     void miss_deadline();
 

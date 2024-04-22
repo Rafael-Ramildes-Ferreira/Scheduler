@@ -62,6 +62,15 @@ int main(int argc, char* argv[]){
 		cout << "  " << p->get_waited_time() << " ";
 	}
 	cout << endl;
+	cout << "Mean turnaround Time for each process:" << endl;
+	for(Process* p:rm_feed.get_processes()){
+		cout << " P" << ++i << " ";
+	}
+	cout << endl;
+	for(Process* p:rm_feed.get_processes()){
+		cout << "  " << p->get_mean_turnaround_time() << " ";
+	}
+	cout << endl;
 
 	
 	cout << endl;
@@ -119,6 +128,15 @@ int main(int argc, char* argv[]){
 	cout << endl;
 	for(Process* p:edf_feed.get_processes()){
 		cout << "  " << p->get_waited_time() << " ";
+	}
+	cout << endl;
+	cout << "Mean turnaround Time for each process:" << endl;
+	for(Process* p:edf_feed.get_processes()){
+		cout << " P" << ++i << " ";
+	}
+	cout << endl;
+	for(Process* p:edf_feed.get_processes()){
+		cout << "  " << p->get_mean_turnaround_time() << " ";
 	}
 	cout << endl;
 	
