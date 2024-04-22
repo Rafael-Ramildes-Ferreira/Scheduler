@@ -180,8 +180,9 @@ int RMScheduler::swap_context(){
 		AbstractContext *running_context;
 		running_context = this->get_cpu_core()->currentContext();
 		this->running_process->set_context(running_context);
-		if(this->running_process->get_state() != FINISHED)
+		if(this->running_process->get_state() != FINISHED){
 			this->add_to_ready(this->running_process);
+		} else  this->running_process->set_state(REMOVED);
 	}
 
 	// Pop next process from the ready list
@@ -377,8 +378,9 @@ int EDFScheduler::swap_context(){
 		AbstractContext *running_context;
 		running_context = this->get_cpu_core()->currentContext();
 		this->running_process->set_context(running_context);
-		if(this->running_process->get_state() != FINISHED)
+		if(this->running_process->get_state() != FINISHED){
 			this->add_to_ready(this->running_process);
+		} else  this->running_process->set_state(REMOVED);
 	}
 
 	// Pop next process from the ready list

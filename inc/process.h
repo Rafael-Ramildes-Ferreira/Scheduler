@@ -3,7 +3,7 @@
 
 #include "AbstractContext.hpp"
 
-enum ProcessState {CREATED, READY, EXECUTING, FINISHED};
+enum ProcessState {CREATED, READY, EXECUTING, FINISHED, REMOVED};
 
 class Process
 {

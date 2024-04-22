@@ -31,10 +31,11 @@ int main(int argc, char* argv[]){
 					cout << " -- ";
 					break;
 				case EXECUTING:
+				case FINISHED:
 					cout << " ## ";
 					break;
 				case CREATED:
-				case FINISHED:
+				case REMOVED:
 					cout << "    ";
 					break;
 			}

@@ -41,10 +41,11 @@ int Feed::step_time(){
 	Process *process = this->scheduler->get_running_process();
 	if(process == nullptr){
 		retval = this->scheduler->swap_context();
-		}
-	else if(process->get_state() == FINISHED || this->scheduler->check_first_in_ready()){
-		retval = this->scheduler->swap_context();}
-	
+	} else if(process->get_state() == FINISHED){
+		retval = this->scheduler->swap_context();
+	} else if(this->scheduler->check_first_in_ready()){
+		retval = this->scheduler->swap_context();
+	}	
 			
 	
 	// Steps time in the program
