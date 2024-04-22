@@ -42,6 +42,19 @@ int main(int argc, char* argv[]){
 		}
 		cout << endl;
 	}
+	cout << "Deaslines missed:" << endl;
+	for(Process* p:rm_feed.get_processes()){
+		cout << " P" << ++i << " ";
+	}
+	cout << endl;
+	for(Process* p:rm_feed.get_processes()){
+		cout << "  " << p->get_miss_deadline() << " ";
+	}
+	cout << endl;
+
+	
+	cout << endl;
+	cout << endl;
 
 	File file2;
 	file2.read_file();
@@ -77,6 +90,15 @@ int main(int argc, char* argv[]){
 		}
 		cout << endl;
 	}
+	cout << "Deaslines missed:" << endl;
+	for(Process* p:edf_feed.get_processes()){
+		cout << " P" << ++i << " ";
+	}
+	cout << endl;
+	for(Process* p:edf_feed.get_processes()){
+		cout << "  " << p->get_miss_deadline() << " ";
+	}
+	cout << endl;
 	
 
 	return 0;

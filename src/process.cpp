@@ -40,6 +40,10 @@ int Process::get_executed_time()
     return this->executed_time;
 }
 
+unsigned int Process::get_miss_deadline(){
+    return this->missed_deadline;
+}
+
 ProcessState Process::get_state()
 {
     return this->state;
@@ -70,6 +74,10 @@ void Process::set_period(int period)
     this->period = period;
 }
 
+void Process::set_miss_deadline(unsigned int deadline){
+    this->missed_deadline = deadline;
+}
+
 void Process::set_context(AbstractContext *context)
 {
     this->context = context;
@@ -91,4 +99,8 @@ void Process::increment_executed_time(){
     } else {
         this->state = EXECUTING;
     }
-};
+}
+
+void Process::miss_deadline(){
+    this->missed_deadline++;
+}

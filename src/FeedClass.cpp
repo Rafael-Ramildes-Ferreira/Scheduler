@@ -32,7 +32,10 @@ int Feed::step_time(){
 			
 			if(p == this->scheduler->get_running_process()){
 				this->scheduler->set_running_process(nullptr);
-			} else this->scheduler->remove_from_ready(p);
+				p->miss_deadline();
+			} else if(this->scheduler->remove_from_ready(p))
+					p->miss_deadline();
+
 			this->scheduler->add_to_ready(p);
 		}
 	}
