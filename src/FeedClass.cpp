@@ -41,7 +41,8 @@ int Feed::step_time(){
 	Process *process = this->scheduler->get_running_process();
 	if(process == nullptr){
 		std::cout << "No running process" << std::endl;
-		retval = this->scheduler->swap_context();}
+		retval = this->scheduler->swap_context();
+		}
 	else if(process->get_state() == FINISHED){//} ||
 		std::cout << "process->get_state() == FINISHED" << std::endl;
 		retval = this->scheduler->swap_context();} 

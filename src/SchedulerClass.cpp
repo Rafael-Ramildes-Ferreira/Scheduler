@@ -361,6 +361,7 @@ EDFScheduler::EDFScheduler(){
 	this->time_quanta = 0;
 	this->ready_list = {};
 	this->running_process = nullptr;
+	this->cpu_core = new ProcessorCore();
 }
 
 /**
